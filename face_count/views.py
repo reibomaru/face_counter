@@ -13,7 +13,7 @@ from mysite.settings import BASE_DIR
 
 
 module_dir = os.path.dirname(__file__)
-json_path = os.path.join(module_dir, 'count.json')
+json_path = os.path.join(module_dir, 'face_count.json')
 face_count = 0
 eye_count = 0
 count_dict = dict()
@@ -40,7 +40,7 @@ def gen():
         if type(faces) != tuple :
             count_up_face()
         count_dict['face_count'] = face_count
-        fw = open(BASE_DIR + '/static/count.json', 'w')
+        fw = open(BASE_DIR + '/static/face_count.json', 'w')
         json.dump(count_dict, fw)       
         sleep(3)
         yield '...'
