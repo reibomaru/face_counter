@@ -13,7 +13,7 @@ OpenCV 4.1.1
 
 ## Demo
 macのカメラの前に顔があるとカウントが増える（来客件数が増える）
-![hoge](https://raw.github.com/wiki/reibomaru/face_counter/images/face_counter.gif))
+![hoge](https://raw.github.com/wiki/reibomaru/face_counter/images/face_counter.gif)
 
 ## Requirement
 OpenCVとNumpyをpipインストールする必要があります。
