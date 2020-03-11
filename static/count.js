@@ -5,7 +5,7 @@ let runtime = 0
 window.setInterval(refreshHTML, 1000);
 
 function refreshHTML() {
-    $.getJSON("/static/count.json", function (json) {
+    $.getJSON("/static/face_count.json", function (json) {
         console.log(json.face_count)
         display_count.textContent = json.face_count
     })
