@@ -38,7 +38,7 @@ def gen():
         faces = face_cascade.detectMultiScale(gray, 1.3, 5)
         # print(type(faces))
         if type(faces) != tuple:
-            count_up_face()
+            count_up_face(len(faces))
             for x, y, w, h in faces:
                 face_gray = gray[y: y + h, x: x + w]
                 eyes = eye_cascade.detectMultiScale(face_gray)
@@ -54,9 +54,9 @@ def gen():
         if key == 27:  # ESCキーで終了
             break
 
-def count_up_face():
+def count_up_face(count):
     global face_count
-    face_count += 1
+    face_count += count
     print('顔を検出した回数は{}回です'.format(face_count))
 
 def count_up_eye():
