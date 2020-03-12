@@ -1,23 +1,21 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.shortcuts import redirect
 from django.http import StreamingHttpResponse
-import numpy as np
 import cv2
-import threading
-from multiprocessing import Process
+# import threading
+# from multiprocessing import Process
 import time
 from time import sleep
 import json
 import os
 from mysite.settings import BASE_DIR
 
-
 module_dir = os.path.dirname(__file__)
 json_path = os.path.join(module_dir, 'face_count.json')
 face_count = 0
 eye_count = 0
 count_dict = dict()
-
+isActiveGen = True
 face_cascade = cv2.CascadeClassifier(BASE_DIR + '/face_count/src/haarcascade_frontalface_default.xml')
 eye_cascade = cv2.CascadeClassifier(BASE_DIR + '/face_count/src/haarcascade_eye.xml')
 cap = cv2.VideoCapture(0)
@@ -26,13 +24,28 @@ def index(request):
     return render(request, 'base.html', count_dict)
 
 def camera(request):
-    return StreamingHttpResponse(show_result(cap, face_cascade, eye_cascade),content_type="multipart/x-mixed-replace;boundary=frame")
+    return StreamingHttpResponse(
+        show_result(cap, face_cascade, eye_cascade),
+        content_type="multipart/x-mixed-replace;boundary=frame"
+    )
 
 def count(request):
+    global isActiveGen
+    isActiveGen = True
+    print('カウントスタート')
     return StreamingHttpResponse(gen())
 
+def stop(request):
+    global isActiveGen
+    isActiveGen = False
+    print('ホゲホゲ')
+    return redirect('/face_count/')
+
 def gen():
-    while True:
+    global isActiveGen
+    start_ut = time.time()
+    count_dict['start_unix_time'] = start_ut
+    while isActiveGen:
         _, img = cap.read()
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         faces = face_cascade.detectMultiScale(gray, 1.3, 5)
@@ -53,6 +66,10 @@ def gen():
         key = cv2.waitKey(10)
         if key == 27:  # ESCキーで終了
             break
+    finish_ut = time.time()
+    count_dict['finish_unix_time'] = finish_ut
+    fw = open(BASE_DIR + '/static/face_count.json', 'w')
+    json.dump(count_dict, fw)
 
 def count_up_face(count):
     global face_count

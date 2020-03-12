@@ -6,15 +6,20 @@
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"
         integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-    <title>Face Analisis</title>
+    <title>Face Analysis</title>
     <link rel='stylesheet' href="{% static 'style.css' %}">
 </head>
 <header class="headgamen">Face Analisis</header>
 <body>
     <div class="main">
-        <p>計測時間: </p>
-        <p id='display_time'></p>
-        <p>秒</p>
+        <div>
+            <p>計測開始日時: </p>
+            <p id='display_start_date'></p>
+        </div>
+        <div>
+            <p>計測開始時刻: </p>
+            <p id='display_start_time'></p>
+        </div>
     </div>
     <div class='main'>
         <p>総視聴回数: </p>
@@ -37,7 +42,7 @@
           href='http://127.0.0.1:8000/face_count/count/' 
           target="_blank"
         >
-        カウントする
+        カウント開始
         </a>
         <a 
           class="btn btn-blue" 
@@ -45,6 +50,12 @@
           target="_blank"
         >
         カメラ起動
+        </a>
+        <a
+          class="btn btn-orange"
+          href='/face_count/stop_count/'
+        >
+        カウント終了
         </a>
     </div>    
 
