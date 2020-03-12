@@ -13,7 +13,7 @@ function refreshHTML() {
 }
 
 function postHandler (json) {
-    console.log(json.face_count)
+    // console.log(json.face_count)
     face_count = json.face_count
     eye_count = json.eye_count
     display_face_count.textContent = face_count
