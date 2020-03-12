@@ -29,29 +29,40 @@ def camera(request):
     return StreamingHttpResponse(show_result(cap, face_cascade, eye_cascade),content_type="multipart/x-mixed-replace;boundary=frame")
 
 def count(request):
-    return StreamingHttpResponse(gen()) 
+    return StreamingHttpResponse(gen())
 
 def gen():
     while True:
-        ret, img = cap.read()
+        _, img = cap.read()
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         faces = face_cascade.detectMultiScale(gray, 1.3, 5)
         # print(type(faces))
-        if type(faces) != tuple :
+        if type(faces) != tuple:
             count_up_face()
+            for x, y, w, h in faces:
+                face_gray = gray[y: y + h, x: x + w]
+                eyes = eye_cascade.detectMultiScale(face_gray)
+                if type(eyes) != tuple:
+                    count_up_eye()
         count_dict['face_count'] = face_count
+        count_dict['eye_count'] = eye_count
         fw = open(BASE_DIR + '/static/face_count.json', 'w')
-        json.dump(count_dict, fw)       
+        json.dump(count_dict, fw)
         sleep(3)
         yield '...'
         key = cv2.waitKey(10)
         if key == 27:  # ESCキーで終了
             break
-        
+
 def count_up_face():
     global face_count
     face_count += 1
-    print('顔の検出した回数は{}回です'.format(face_count))
+    print('顔を検出した回数は{}回です'.format(face_count))
+
+def count_up_eye():
+    global eye_count
+    eye_count += 1
+    print('目を検出した回数は{}回です'.format(eye_count))
 
 def show_result(cap, face_cascade, eye_cascade):
     while True:
@@ -64,11 +75,10 @@ def show_result(cap, face_cascade, eye_cascade):
             face_gray = gray[y: y + h, x: x + w]
             eyes = eye_cascade.detectMultiScale(face_gray)
             for (ex, ey, ew, eh) in eyes:
-                cv2.rectangle(face, (ex, ey), (ex + ew, ey + eh), (0, 255, 0), 2)       
-        ret, jpeg = cv2.imencode('.jpg', img)
+                cv2.rectangle(face, (ex, ey), (ex + ew, ey + eh), (0, 255, 0), 2)
+        _, jpeg = cv2.imencode('.jpg', img)
         frame = jpeg.tobytes()
-        yield(b'--frame\r\n'
-        b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
+        yield b'--frame\r\n'b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n'
         key = cv2.waitKey(10)
         if key == 27:  # ESCキーで終了
             break
