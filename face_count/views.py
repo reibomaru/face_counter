@@ -32,13 +32,12 @@ def camera(request):
 def count(request):
     global isActiveGen
     isActiveGen = True
-    print('カウントスタート')
-    return StreamingHttpResponse(gen())
+    gen()
+    return redirect('/face_count/')
 
 def stop(request):
     global isActiveGen
     isActiveGen = False
-    print('ホゲホゲ')
     return redirect('/face_count/')
 
 def gen():
@@ -49,7 +48,6 @@ def gen():
         _, img = cap.read()
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         faces = face_cascade.detectMultiScale(gray, 1.3, 5)
-        # print(type(faces))
         if type(faces) != tuple:
             count_up_face(len(faces))
             for x, y, w, h in faces:
@@ -62,7 +60,6 @@ def gen():
         fw = open(BASE_DIR + '/static/face_count.json', 'w')
         json.dump(count_dict, fw)
         sleep(3)
-        yield '...'
         key = cv2.waitKey(10)
         if key == 27:  # ESCキーで終了
             break
@@ -74,12 +71,10 @@ def gen():
 def count_up_face(count):
     global face_count
     face_count += count
-    print('顔を検出した回数は{}回です'.format(face_count))
 
 def count_up_eye():
     global eye_count
     eye_count += 1
-    print('目を検出した回数は{}回です'.format(eye_count))
 
 def show_result(cap, face_cascade, eye_cascade):
     while True:
