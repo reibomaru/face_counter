@@ -4,18 +4,18 @@ const display_face_only_count = document.getElementById('display_face_only_count
 const display_start_date = document.getElementById('display_start_date')
 const display_start_time = document.getElementById('display_start_time')
 
-let runtime = 0
-let face_count = 0
-let eye_count = 0
-let face_only_count = 0
-let dateText = ''
-let timeText = ''
+let face_count_data = {
+    face_count: 0,
+    eye_count: 0,
+    start_unix_time: null,
+}
 
 document.addEventListener('DOMContentLoaded', function () {
+    renderHTMLFromData(face_count_data)
     setInterval(function () {
         intervalRendering().then(
             function (response) {
-                postHandler(response)
+                renderHTMLFromData(response)
             },
             function (error) {
                 console.log(error)
@@ -32,19 +32,26 @@ function intervalRendering() {
     })
 }
 
-function postHandler(json) {
-    [dateText, timeText] = renderStartDateAndTime(json.start_unix_time)
-    display_start_date.textContent = dateText
-    display_start_time.textContent = timeText
-    face_count = json.face_count
-    eye_count = json.eye_count
-    face_only_count = face_count - eye_count
-    display_face_count.textContent = face_count
-    display_eye_count.textContent = eye_count
+function renderCount(data) {
+    let face_only_count = null
+    display_face_count.textContent = data.face_count
+    display_eye_count.textContent = data.eye_count
+    face_only_count = data.face_count - data.eye_count
     display_face_only_count.textContent = face_only_count
 }
 
+function renderHTMLFromData(data) {
+    renderCount(data)
+    renderStartDateAndTime(data.start_unix_time)
+}
+
 function renderStartDateAndTime(unixtime) {
+    if (unixtime === null) {
+        display_start_date.textContent = '----/-/-'
+        display_start_time.textContent = '--:--:--'
+        return
+    }
     let dateTime = new Date(unixtime * 1000);
-    return [dateTime.toLocaleDateString(), dateTime.toLocaleTimeString('ja-JP')]
+    display_start_date.textContent = dateTime.toLocaleDateString('ja-JP')
+    display_start_time.textContent = dateTime.toLocaleTimeString('ja-JP')
 }
