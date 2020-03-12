@@ -8,7 +8,9 @@ let eye_count = 0
 window.setInterval(refreshHTML, 1000);
 
 function refreshHTML() {
-    $.post("/static/face_count.json", postHandler(json))
+    $.post("/static/face_count.json", function (json) {
+        postHandler(json)
+    })
     display_time.textContent = runtime++
 }
 
