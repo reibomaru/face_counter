@@ -3,6 +3,8 @@ const display_eye_count = document.getElementById('display_eye_count')
 const display_face_only_count = document.getElementById('display_face_only_count')
 const display_start_date = document.getElementById('display_start_date')
 const display_start_time = document.getElementById('display_start_time')
+const count_start_btn = document.getElementById('count_start_btn')
+const count_stop_btn = document.getElementById('count_stop_btn')
 
 let face_count_data = {
     face_count: 0,
@@ -10,11 +12,12 @@ let face_count_data = {
     start_unix_time: null,
 }
 
+let intervalID = null
+
 const httpRequest = new XMLHttpRequest();
 
 document.addEventListener('DOMContentLoaded', function () {
     renderHTMLFromData(face_count_data)
-    let intervalID
     intervalID = setInterval(function () {
         intervalRendering().then(
             function (response) {
@@ -29,6 +32,67 @@ document.addEventListener('DOMContentLoaded', function () {
     }, 3000);
 })
 
+count_start_btn.addEventListener('click', function () {
+    sendStart().then(
+        function () {
+            console.log('正常にカウントは開始されました。')
+        },
+        function () {
+            console.log('カウントの開始に異常がありました。')
+            clearInterval(intervalID)
+        }
+    )
+})
+
+count_stop_btn.addEventListener('click', function () {
+    sendStop().then(
+        function () {
+            console.log('正常にカウントは停止されました。')
+            clearInterval(intervalID)
+        },
+        function () {
+            console.log('カウントの停止に異常がありました。')
+            clearInterval(intervalID)
+        }
+    )
+})
+
+function sendStart() {
+    return new Promise(function (resolve, reject) {
+        httpRequest.open('GET', '/face_count/start_count/')
+        httpRequest.send()
+        httpRequest.onreadystatechange = function () {
+            if (httpRequest.readyState === 4) {
+                console.log(httpRequest.status)
+                if (httpRequest.status === 200) {
+                    resolve()
+                } else {
+                    console.log('エラー')
+                    reject()
+                }
+            }
+        }
+    })
+}
+
+function sendStop() {
+    return new Promise(function (resolve, reject) {
+        httpRequest.open('GET', '/face_count/stop_count/')
+        httpRequest.send()
+        httpRequest.onreadystatechange = function () {
+            if (httpRequest.readyState === 4) {
+                // console.log(httpRequest.status)
+                if (httpRequest.status === 200) {
+                    resolve()
+                } else {
+                    // console.log('エラー')
+                    reject()
+                }
+            }
+        }
+    })
+}
+
 function intervalRendering() {
     return new Promise(function (resolve,reject) {
         httpRequest.onreadystatechange = function () {
@@ -37,7 +101,6 @@ function intervalRendering() {
                     let json = JSON.parse(httpRequest.responseText || 'null')
                     resolve(json)
                 } else {
-                    alert('データが読み込めませんでした')
                     reject()
                 }
             }

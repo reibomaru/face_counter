@@ -20,6 +20,7 @@
   text-decoration: none;
   color: #FFF;
   border-radius: 3px;
+  cursor: pointer;
 }
 
 .btn-blue{
