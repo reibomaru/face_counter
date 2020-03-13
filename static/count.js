@@ -10,25 +10,40 @@ let face_count_data = {
     start_unix_time: null,
 }
 
+const httpRequest = new XMLHttpRequest();
+
 document.addEventListener('DOMContentLoaded', function () {
     renderHTMLFromData(face_count_data)
-    setInterval(function () {
+    let intervalID
+    intervalID = setInterval(function () {
         intervalRendering().then(
             function (response) {
                 renderHTMLFromData(response)
             },
-            function (error) {
-                console.log(error)
+            function () {
+                renderHTMLFromData(face_count_data)
+                alert('カウントを終了します。')
+                clearInterval(intervalID)
             }
         )
     }, 3000);
 })
 
 function intervalRendering() {
-    return new Promise(function (resolve) {
-        $.post("/static/face_count.json", function (json) {
-            return resolve(json)
-        })
+    return new Promise(function (resolve,reject) {
+        httpRequest.onreadystatechange = function () {
+            if (httpRequest.readyState === 4) {
+                if (httpRequest.status === 200) {
+                    let json = JSON.parse(httpRequest.responseText || 'null')
+                    resolve(json)
+                } else {
+                    alert('データが読み込めませんでした')
+                    reject()
+                }
+            }
+        }
+        httpRequest.open('POST', "/static/face_count.json");
+        httpRequest.send();
     })
 }
 
@@ -41,6 +56,9 @@ function renderCount(data) {
 }
 
 function renderHTMLFromData(data) {
+    if (data === null) {
+        data = face_count_data
+    }
     renderCount(data)
     renderStartDateAndTime(data.start_unix_time)
 }
