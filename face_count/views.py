@@ -1,9 +1,8 @@
 from django.shortcuts import render
 from django.shortcuts import redirect
 from django.http import StreamingHttpResponse
+from django.http import HttpResponse
 import cv2
-# import threading
-# from multiprocessing import Process
 import time
 from time import sleep
 import json
@@ -32,15 +31,15 @@ def camera(request):
 def count(request):
     global isActiveGen
     isActiveGen = True
-    gen()
-    return redirect('/face_count/')
+    return StreamingHttpResponse(gen(),content_type='text/html')
 
 def stop(request):
     global isActiveGen
     isActiveGen = False
-    return redirect('/face_count/')
+    return HttpResponse('OK')
 
 def gen():
+    yield 'OK'
     global isActiveGen
     start_ut = time.time()
     count_dict['start_unix_time'] = start_ut
