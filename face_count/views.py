@@ -1,10 +1,10 @@
 from django.shortcuts import render
-from django.shortcuts import redirect
 from django.http import StreamingHttpResponse
 from django.http import HttpResponse
+from multiprocessing import Value, Process
+from ctypes import c_bool
 import cv2
 import time
-from time import sleep
 import json
 import os
 from mysite.settings import BASE_DIR
@@ -14,37 +14,64 @@ json_path = os.path.join(module_dir, 'face_count.json')
 face_count = 0
 eye_count = 0
 count_dict = dict()
-isActiveGen = True
+isActiveGen = Value(c_bool, False)
 face_cascade = cv2.CascadeClassifier(BASE_DIR + '/face_count/src/haarcascade_frontalface_default.xml')
 eye_cascade = cv2.CascadeClassifier(BASE_DIR + '/face_count/src/haarcascade_eye.xml')
-cap = cv2.VideoCapture(0)
+
+process = None
 
 def index(request):
     return render(request, 'base.html', count_dict)
 
 def camera(request):
     return StreamingHttpResponse(
-        show_result(cap, face_cascade, eye_cascade),
+        show_result(face_cascade, eye_cascade),
         content_type="multipart/x-mixed-replace;boundary=frame"
     )
 
 def count(request):
     global isActiveGen
-    isActiveGen = True
-    return StreamingHttpResponse(gen(),content_type='text/html')
+    global process
+
+    isActiveGen = Value(c_bool, False)
+
+    process = Process(target=gen, args=(isActiveGen,))
+    process.start()
+
+    isActiveGen = Value(c_bool, False)
+
+    return HttpResponse('OK')
+    # return StreamingHttpResponse(gen(), content_type='text/html')
 
 def stop(request):
     global isActiveGen
-    isActiveGen = False
+    global process
+
+    isActiveGen = Value(c_bool, False)
+    # process = Process(target=gen, args=(isActiveGen,))
+    # process.join()
+    process = Process(target=gen, args=(isActiveGen,))
+
+    pid_list = []
+    print(pid_list.append(os.getpid()))
+
+    print(isActiveGen)
+    print('bye')
     return HttpResponse('OK')
 
-def gen():
-    yield 'OK'
-    global isActiveGen
+def gen(isActiveGen):
+    cap_2 = cv2.VideoCapture(0)
     start_ut = time.time()
     count_dict['start_unix_time'] = start_ut
-    while isActiveGen:
-        _, img = cap.read()
+    while bool(isActiveGen):
+        print('hi')
+        # cv2.setNumThreads(0)
+        # print(cap_2)
+        _, img = cap_2.read()
+        # print(img)
+        if None:
+            print('画像がありません')
+            break
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         faces = face_cascade.detectMultiScale(gray, 1.3, 5)
         if type(faces) != tuple:
@@ -58,7 +85,7 @@ def gen():
         count_dict['eye_count'] = eye_count
         fw = open(BASE_DIR + '/static/face_count.json', 'w')
         json.dump(count_dict, fw)
-        sleep(3)
+        time.sleep(3)
         key = cv2.waitKey(10)
         if key == 27:  # ESCキーで終了
             break
@@ -75,9 +102,12 @@ def count_up_eye():
     global eye_count
     eye_count += 1
 
-def show_result(cap, face_cascade, eye_cascade):
+def show_result(face_cascade, eye_cascade):
+    cap_1 = cv2.VideoCapture(0)
     while True:
-        _, img = cap.read()
+        # print(cap_1)
+        _, img = cap_1.read()
+        # print(img)
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         faces = face_cascade.detectMultiScale(gray, 1.3, 5)
         for x, y, w, h in faces:
