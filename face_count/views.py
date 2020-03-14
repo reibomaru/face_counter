@@ -17,7 +17,6 @@ count_dict = dict()
 isActiveGen = Value(c_bool, False)
 face_cascade = cv2.CascadeClassifier(BASE_DIR + '/face_count/src/haarcascade_frontalface_default.xml')
 eye_cascade = cv2.CascadeClassifier(BASE_DIR + '/face_count/src/haarcascade_eye.xml')
-
 process = None
 
 def index(request):
@@ -32,26 +31,22 @@ def camera(request):
 def count(request):
     global isActiveGen
     global process
-
     process = Process(target=gen, args=(isActiveGen,))
     process.start()
     isActiveGen.value = True
-
     return HttpResponse('OK')
-    # return StreamingHttpResponse(gen(), content_type='text/html')
 
 def stop(request):
     global isActiveGen
     global process
-
     isActiveGen.value = False
-    process = Process(target=gen, args=(isActiveGen,))
     return HttpResponse('OK')
 
 def gen(isActiveGen):
     cap_2 = cv2.VideoCapture(0)
     start_ut = time.time()
     count_dict['start_unix_time'] = start_ut
+    key = cv2.waitKey(10)
     while isActiveGen.value:
         _, img = cap_2.read()
         if None:
@@ -71,9 +66,6 @@ def gen(isActiveGen):
         fw = open(BASE_DIR + '/static/face_count.json', 'w')
         json.dump(count_dict, fw)
         time.sleep(3)
-        key = cv2.waitKey(10)
-        if key == 27:  # ESCキーで終了
-            break
     finish_ut = time.time()
     count_dict['finish_unix_time'] = finish_ut
     fw = open(BASE_DIR + '/static/face_count.json', 'w')
