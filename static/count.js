@@ -18,18 +18,7 @@ const httpRequest = new XMLHttpRequest();
 
 document.addEventListener('DOMContentLoaded', function () {
     renderHTMLFromData(face_count_data)
-    intervalID = setInterval(function () {
-        intervalRendering().then(
-            function (response) {
-                renderHTMLFromData(response)
-            },
-            function () {
-                renderHTMLFromData(face_count_data)
-                alert('カウントを終了します。')
-                clearInterval(intervalID)
-            }
-        )
-    }, 3000);
+    
 })
 
 count_start_btn.addEventListener('click', function () {
@@ -40,6 +29,21 @@ count_start_btn.addEventListener('click', function () {
         function () {
             console.log('カウントの開始に異常がありました。')
             clearInterval(intervalID)
+        }
+    ).then(
+        function () {
+            intervalID = setInterval(function () {
+                intervalRendering().then(
+                    function (response) {
+                        renderHTMLFromData(response)
+                    },
+                    function () {
+                        renderHTMLFromData(face_count_data)
+                        alert('カウントを終了します。')
+                        clearInterval(intervalID)
+                    }
+                )
+            }, 3000);
         }
     )
 })

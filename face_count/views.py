@@ -33,12 +33,9 @@ def count(request):
     global isActiveGen
     global process
 
-    isActiveGen = Value(c_bool, False)
-
     process = Process(target=gen, args=(isActiveGen,))
     process.start()
-
-    isActiveGen = Value(c_bool, False)
+    isActiveGen.value = True
 
     return HttpResponse('OK')
     # return StreamingHttpResponse(gen(), content_type='text/html')
@@ -47,28 +44,16 @@ def stop(request):
     global isActiveGen
     global process
 
-    isActiveGen = Value(c_bool, False)
-    # process = Process(target=gen, args=(isActiveGen,))
-    # process.join()
+    isActiveGen.value = False
     process = Process(target=gen, args=(isActiveGen,))
-
-    pid_list = []
-    print(pid_list.append(os.getpid()))
-
-    print(isActiveGen)
-    print('bye')
     return HttpResponse('OK')
 
 def gen(isActiveGen):
     cap_2 = cv2.VideoCapture(0)
     start_ut = time.time()
     count_dict['start_unix_time'] = start_ut
-    while bool(isActiveGen):
-        print('hi')
-        # cv2.setNumThreads(0)
-        # print(cap_2)
+    while isActiveGen.value:
         _, img = cap_2.read()
-        # print(img)
         if None:
             print('画像がありません')
             break
@@ -105,9 +90,7 @@ def count_up_eye():
 def show_result(face_cascade, eye_cascade):
     cap_1 = cv2.VideoCapture(0)
     while True:
-        # print(cap_1)
         _, img = cap_1.read()
-        # print(img)
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         faces = face_cascade.detectMultiScale(gray, 1.3, 5)
         for x, y, w, h in faces:
