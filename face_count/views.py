@@ -13,20 +13,24 @@ module_dir = os.path.dirname(__file__)
 json_path = os.path.join(module_dir, 'face_count.json')
 face_count = 0
 eye_count = 0
-count_dict = dict()
 isActiveGen = Value(c_bool, False)
-face_cascade = cv2.CascadeClassifier(BASE_DIR + '/face_count/src/haarcascade_frontalface_default.xml')
-eye_cascade = cv2.CascadeClassifier(BASE_DIR + '/face_count/src/haarcascade_eye.xml')
+face_cascade = cv2.CascadeClassifier(
+    BASE_DIR + '/face_count/src/haarcascade_frontalface_default.xml')
+eye_cascade = cv2.CascadeClassifier(
+    BASE_DIR + '/face_count/src/haarcascade_eye.xml')
 process = None
 
+
 def index(request):
-    return render(request, 'base.html', count_dict)
+    return render(request, 'base.html')
+
 
 def camera(request):
     return StreamingHttpResponse(
         show_result(face_cascade, eye_cascade),
         content_type="multipart/x-mixed-replace;boundary=frame"
     )
+
 
 def count(request):
     global isActiveGen
@@ -36,17 +40,32 @@ def count(request):
     isActiveGen.value = True
     return HttpResponse('OK')
 
+
 def stop(request):
     global isActiveGen
     global process
     isActiveGen.value = False
+    record_count()
     return HttpResponse('OK')
 
+
+def record_count():
+    count_fr = open(BASE_DIR + '/static/face_count.json', 'r')
+    count_dict = json.load(count_fr)
+    count_record_fr = open(
+        BASE_DIR + '/face_count/face_count_records.json', 'r')
+    count_record_dict = json.load(count_record_fr)
+    count_record_len = len(count_record_dict["records"])
+    count_record_dict["records"][str(count_record_len)] = count_dict
+    fw = open(BASE_DIR + '/face_count/face_count_records.json', 'w')
+    json.dump(count_record_dict, fw)
+
+
 def gen(isActiveGen):
+    count_dict = dict()
     cap_2 = cv2.VideoCapture(0)
     start_ut = time.time()
     count_dict['start_unix_time'] = start_ut
-    key = cv2.waitKey(10)
     while isActiveGen.value:
         _, img = cap_2.read()
         if None:
@@ -71,13 +90,16 @@ def gen(isActiveGen):
     fw = open(BASE_DIR + '/static/face_count.json', 'w')
     json.dump(count_dict, fw)
 
+
 def count_up_face(count):
     global face_count
     face_count += count
 
+
 def count_up_eye():
     global eye_count
     eye_count += 1
+
 
 def show_result(face_cascade, eye_cascade):
     cap_1 = cv2.VideoCapture(0)
@@ -91,7 +113,8 @@ def show_result(face_cascade, eye_cascade):
             face_gray = gray[y: y + h, x: x + w]
             eyes = eye_cascade.detectMultiScale(face_gray)
             for (ex, ey, ew, eh) in eyes:
-                cv2.rectangle(face, (ex, ey), (ex + ew, ey + eh), (0, 255, 0), 2)
+                cv2.rectangle(face, (ex, ey),
+                              (ex + ew, ey + eh), (0, 255, 0), 2)
         _, jpeg = cv2.imencode('.jpg', img)
         frame = jpeg.tobytes()
         yield b'--frame\r\n'b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n'
