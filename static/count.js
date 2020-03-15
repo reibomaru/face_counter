@@ -18,11 +18,12 @@ const httpRequest = new XMLHttpRequest();
 
 document.addEventListener('DOMContentLoaded', function () {
     renderHTMLFromData(face_count_data)
-    
 })
 
 count_start_btn.addEventListener('click', function () {
-    sendStart().then(
+    getJSON().then(
+        sendStart()
+    ).then(
         function () {
             console.log('正常にカウントは開始されました。')
         },
@@ -33,7 +34,7 @@ count_start_btn.addEventListener('click', function () {
     ).then(
         function () {
             intervalID = setInterval(function () {
-                intervalRendering().then(
+                getJSON().then(
                     function (response) {
                         renderHTMLFromData(response)
                     },
@@ -85,11 +86,9 @@ function sendStop() {
         httpRequest.send()
         httpRequest.onreadystatechange = function () {
             if (httpRequest.readyState === 4) {
-                // console.log(httpRequest.status)
                 if (httpRequest.status === 200) {
                     resolve()
                 } else {
-                    // console.log('エラー')
                     reject()
                 }
             }
@@ -97,8 +96,8 @@ function sendStop() {
     })
 }
 
-function intervalRendering() {
-    return new Promise(function (resolve,reject) {
+function getJSON() {
+    return new Promise(function (resolve, reject) {
         httpRequest.onreadystatechange = function () {
             if (httpRequest.readyState === 4) {
                 if (httpRequest.status === 200) {
