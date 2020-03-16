@@ -20,10 +20,8 @@ document.addEventListener('DOMContentLoaded', function () {
     renderHTMLFromData(face_count_data)
 })
 
-count_start_btn.addEventListener('click', function () {
-    getJSON().then(
-        sendStart()
-    ).then(
+count_start_btn.addEventListener('click', function () { 
+    sendStart().then(
         function () {
             console.log('正常にカウントは開始されました。')
         },

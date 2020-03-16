@@ -18,7 +18,6 @@ face_cascade = cv2.CascadeClassifier(
     BASE_DIR + '/face_count/src/haarcascade_frontalface_default.xml')
 eye_cascade = cv2.CascadeClassifier(
     BASE_DIR + '/face_count/src/haarcascade_eye.xml')
-process = None
 
 
 def index(request):
@@ -34,7 +33,6 @@ def camera(request):
 
 def count(request):
     global isActiveGen
-    global process
     process = Process(target=gen, args=(isActiveGen,))
     process.start()
     isActiveGen.value = True
@@ -43,22 +41,8 @@ def count(request):
 
 def stop(request):
     global isActiveGen
-    global process
     isActiveGen.value = False
-    record_count()
     return HttpResponse('OK')
-
-
-def record_count():
-    count_fr = open(BASE_DIR + '/static/face_count.json', 'r')
-    count_dict = json.load(count_fr)
-    count_record_fr = open(
-        BASE_DIR + '/face_count/face_count_records.json', 'r')
-    count_record_dict = json.load(count_record_fr)
-    count_record_len = len(count_record_dict["records"])
-    count_record_dict["records"][str(count_record_len)] = count_dict
-    fw = open(BASE_DIR + '/face_count/face_count_records.json', 'w')
-    json.dump(count_record_dict, fw)
 
 
 def gen(isActiveGen):
@@ -87,8 +71,17 @@ def gen(isActiveGen):
         time.sleep(3)
     finish_ut = time.time()
     count_dict['finish_unix_time'] = finish_ut
-    fw = open(BASE_DIR + '/static/face_count.json', 'w')
-    json.dump(count_dict, fw)
+    record_count(count_dict)
+
+
+def record_count(count_dict):
+    count_record_fr = open(
+        BASE_DIR + '/face_count/face_count_records.json', 'r')
+    count_record_dict = json.load(count_record_fr)
+    count_record_len = len(count_record_dict["records"])
+    count_record_dict["records"][str(count_record_len)] = count_dict
+    fw = open(BASE_DIR + '/face_count/face_count_records.json', 'w')
+    json.dump(count_record_dict, fw)
 
 
 def count_up_face(count):
