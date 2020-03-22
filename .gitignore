@@ -1,3 +1,6 @@
 *.json
 *.vscode
 __pycache__/
+myvenv
+.DS_Store
+db.sqlite3
