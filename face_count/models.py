@@ -1,7 +1,14 @@
+from django.conf import settings
 from django.db import models
 
-# Create your models here.
 
 class Count(models.Model):
-    face_count = models.IntegerField(default=0)
+    face_count = models.IntegerField()
+    eye_count = models.IntegerField(default=0)
+    start_unix_datetime = models.FloatField(blank=True, null=True)
+    finish_unix_datetime = models.FloatField(blank=True, null=True)
+    start_date = models.DateTimeField(blank=True, null=True)
+    finish_date = models.DateTimeField(blank=True, null=True)
 
+    def __str__(self):
+        return 'カウント'
