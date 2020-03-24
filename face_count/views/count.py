@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.utils import timezone
 from multiprocessing import Value, Process
 from ctypes import c_bool
 import cv2
@@ -67,7 +68,9 @@ def gen(isActiveGen):
 
 def record_count(count):
     print(count)
+    data_title = 'データ：' + str(timezone.now())
     Count.objects.create(
+        data_title=data_title,
         face_count=count['face_count'],
         eye_count=count['eye_count'],
         start_unix_datetime=count['start_unix_time'],
