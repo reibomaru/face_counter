@@ -67,7 +67,6 @@ def gen(isActiveGen):
 
 
 def record_count(count):
-    print(count)
     data_title = 'データ：' + str(timezone.now())
     Count.objects.create(
         data_title=data_title,

@@ -3,6 +3,7 @@ Python 3.5.2
 Anaconda 4.1.1  
 Django 2.2.5  
 OpenCV 4.1.1  
+mysqlclient 1.4.6  
 
 ## Overview
 カメラの前に顔があるとカウントをするアプリを作りました。
@@ -13,7 +14,7 @@ OpenCV 4.1.1
 
 ## Demo
 macのカメラの前に顔があるとカウントが増える（来客件数が増える）
-![hoge](https://raw.github.com/wiki/reibomaru/face_counter/images/face_counter.gif))
+![hoge](https://raw.github.com/wiki/reibomaru/face_counter/images/face_counter.gif)
 
 ## Requirement
 OpenCVとNumpyをpipインストールする必要があります。
