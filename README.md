@@ -3,6 +3,7 @@ Python 3.5.2
 Anaconda 4.1.1  
 Django 2.2.5  
 OpenCV 4.1.1  
+mysqlclient 1.4.6  
 
 ## Overview
 カメラの前に顔があるとカウントをするアプリを作りました。
