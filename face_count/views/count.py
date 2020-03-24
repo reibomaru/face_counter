@@ -7,6 +7,7 @@ import time
 import json
 import os
 from mysite.settings import BASE_DIR
+from face_count.models import Count
 
 module_dir = os.path.dirname(__file__)
 json_path = os.path.join(module_dir, 'face_count.json')
@@ -40,8 +41,7 @@ def stop(request):
 def gen(isActiveGen):
     count_dict = dict()
     cap_2 = cv2.VideoCapture(0)
-    start_ut = time.time()
-    count_dict['start_unix_time'] = start_ut
+    count_dict['start_unix_time'] = time.time()
     while isActiveGen.value:
         _, img = cap_2.read()
         if None:
@@ -61,19 +61,18 @@ def gen(isActiveGen):
         fw = open(BASE_DIR + '/static/face_count.json', 'w')
         json.dump(count_dict, fw)
         time.sleep(3)
-    finish_ut = time.time()
-    count_dict['finish_unix_time'] = finish_ut
+    count_dict['finish_unix_time'] = time.time()
     record_count(count_dict)
 
 
-def record_count(count_dict):
-    count_record_fr = open(
-        BASE_DIR + '/face_count/face_count_records.json', 'r')
-    count_record_dict = json.load(count_record_fr)
-    count_record_len = len(count_record_dict["records"])
-    count_record_dict["records"][str(count_record_len)] = count_dict
-    fw = open(BASE_DIR + '/face_count/face_count_records.json', 'w')
-    json.dump(count_record_dict, fw)
+def record_count(count):
+    print(count)
+    Count.objects.create(
+        face_count=count['face_count'],
+        eye_count=count['eye_count'],
+        start_unix_datetime=count['start_unix_time'],
+        finish_unix_datetime=count['finish_unix_time'],
+    )
 
 
 def count_up_face(count):
