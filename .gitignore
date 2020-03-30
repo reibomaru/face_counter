@@ -1,5 +1,6 @@
 *.json
 *.vscode
+*.pem
 __pycache__/
 myvenv
 .DS_Store
