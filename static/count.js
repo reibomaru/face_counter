@@ -8,12 +8,8 @@ const count_stop_btn = document.getElementById('count_stop_btn')
 
 const player = document.getElementById('player');
 const snapshotCanvas = document.getElementById('snapshot');
-const captureButton = document.getElementById('capture');
 var videoTracks;
 
-captureButton.addEventListener('click', function () {
-    captureSnapshot()
-});
 
 let face_count_data = {
     face_count: 0,
@@ -39,19 +35,9 @@ const handleSuccess = function (stream) {
 
 function captureSnapshotAndSendImg() {
     const context = snapshotCanvas.getContext('2d')
-    // document.getElementById('image').src = ''
-    // base_image = new Image();
-    // base_image.src = './japan.png';
-    // base_image.onload = function () {
-    //     context.drawImage(base_image, 0, 0, 128, 72);
-    // }
-    // context.drawImage(document.getElementById('image'), 0, 0);
     context.drawImage(player, 0, 0, 1280, 720)
-
     return new Promise(function (resolve, reject) {
         const imgBlob = snapshotCanvas.toDataURL("image/png", 1.0);
-        console.log(imgBlob.length)
-        // console.log(imgBlob)
         sendImg(imgBlob).then(
             function (response) {
                 console.log('画像が正常に送信できています')
@@ -115,7 +101,6 @@ function sendStart() {
         httpRequest.send()
         httpRequest.onreadystatechange = function () {
             if (httpRequest.readyState === 4) {
-                // console.log(httpRequest.status)
                 if (httpRequest.status === 200) {
                     resolve()
                 } else {
@@ -145,21 +130,12 @@ function sendStop() {
 
 function sendImg(imgBlob) {
     return new Promise(function (resolve, reject) {
-        // const imgBlob = captureSnapshot()
-        // console.log(imgBlob)
-        // json = {
-        //     // img: imgBlob,
-        //     height: snapshotCanvas.height,
-        //     width: snapshotCanvas.width,
-        // }
         formdata = new FormData()
         formdata.append('img', imgBlob)
         formdata.append('height', snapshotCanvas.height)
         formdata.append('width', snapshotCanvas.width)
         httpRequest.open('POST', '/face_count/send_img/')
         httpRequest.setRequestHeader("X-CSRFToken", csrftoken)
-        // httpRequest.setRequestHeader("Content-Type", "");
-        // httpRequest.send(JSON.stringify(json))
         httpRequest.send(formdata)
         httpRequest.onreadystatechange = function () {
             if (httpRequest.readyState === 4) {
@@ -174,22 +150,6 @@ function sendImg(imgBlob) {
     })
 }
 
-// function getJSON() {
-//     return new Promise(function (resolve, reject) {
-//         httpRequest.open('POST', "/static/face_count.json");
-//         httpRequest.send();
-//         httpRequest.onreadystatechange = function () {
-//             if (httpRequest.readyState === 4) {
-//                 if (httpRequest.status === 200) {
-//                     let json = JSON.parse(httpRequest.responseText || 'null')
-//                     resolve(json)
-//                 } else {
-//                     reject()
-//                 }
-//             }
-//         }
-//     })
-// }
 
 function renderCount(data) {
     let face_only_count = null

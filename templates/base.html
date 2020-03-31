@@ -10,7 +10,6 @@
 <header class="headgamen">Face Analisis</header>
 <body>
     <div class="main">
-        <img src="{% static 'japan.png' %}" id="image">
         <div>
             <p>計測開始日時: </p>
             <p id='display_start_date'></p>
@@ -57,7 +56,6 @@
         </a>
     </div>    
     <video id="player" controls autoplay></video>
-    <button id="capture">Capture</button>
     <canvas id="snapshot" width=1280 height=720></canvas>
     <script src="{% static 'count.js' %}"></script>
 </body>
