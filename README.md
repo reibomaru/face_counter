@@ -21,6 +21,9 @@ OpenCVとNumpyをpipインストールする必要があります。
 
 ## Usage
 アプリを使用するためにはmysite/staticフォルダにface_count.jsonファイルを作成する必要がありますので注意してください。
+```
+pip install -r requirements.txt
+```
 
 ## Licence
 

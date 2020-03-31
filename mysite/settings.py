@@ -25,7 +25,9 @@ SECRET_KEY = 'w^#779p6o0b&+!5r6y$!@lyiu(fxtnc5f1flln6g8o%x@!hbtl'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+        'ec2-13-113-18-62.ap-northeast-1.compute.amazonaws.com'
+        ]
 
 
 # Application definition
@@ -70,14 +72,6 @@ TEMPLATES = [
     },
 ]
 
-STATIC_URL = '/static/'
-
-STATICFILES_DIRS = (
-    [
-        os.path.join(BASE_DIR, "static"),
-    ]
-)
-
 WSGI_APPLICATION = 'mysite.wsgi.application'
 
 
@@ -85,9 +79,9 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
+        'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'face_counter',
+        'NAME': 'face_count',
         'USER': 'root',
         'PASSWORD':'Reibo1998@',
         'HOST': '',
@@ -133,3 +127,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATICFILES_DIRS = (
+    [
+        os.path.join(BASE_DIR, "static"),
+    ]
+)

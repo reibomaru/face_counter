@@ -170,6 +170,14 @@ form .aligned p.help, form .aligned div.help {
     clear: right;
 }
 
+<<<<<<< HEAD
+=======
+form .aligned ul {
+    margin-right: 163px;
+    margin-left: 0;
+}
+
+>>>>>>> 433823e76cc3fa6562e99f7c8288fc7cf2bdfc1b
 form ul.inline li {
     float: right;
     padding-right: 0;

@@ -353,7 +353,11 @@ body.popup .submit-row {
     width: 2.2em;
 }
 
+<<<<<<< HEAD
 .vTextField {
+=======
+.vTextField, .vUUIDField {
+>>>>>>> 433823e76cc3fa6562e99f7c8288fc7cf2bdfc1b
     width: 20em;
 }
 
