@@ -63,6 +63,10 @@
         },
         // Add a warning when the time zone in the browser and backend do not match.
         addTimezoneWarning: function(inp) {
+<<<<<<< HEAD
+            var $ = django.jQuery;
+=======
+>>>>>>> 433823e76cc3fa6562e99f7c8288fc7cf2bdfc1b
             var warningClass = DateTimeShortcuts.timezoneWarningClass;
             var timezoneOffset = DateTimeShortcuts.timezoneOffset / 3600;
 
@@ -72,7 +76,11 @@
             }
 
             // Check if warning is already there.
+<<<<<<< HEAD
+            if ($(inp).siblings('.' + warningClass).length) {
+=======
             if (inp.parentNode.querySelectorAll('.' + warningClass).length) {
+>>>>>>> 433823e76cc3fa6562e99f7c8288fc7cf2bdfc1b
                 return;
             }
 
@@ -94,11 +102,21 @@
             }
             message = interpolate(message, [timezoneOffset]);
 
+<<<<<<< HEAD
+            var $warning = $('<span>');
+            $warning.attr('class', warningClass);
+            $warning.text(message);
+
+            $(inp).parent()
+                .append($('<br>'))
+                .append($warning);
+=======
             var warning = document.createElement('span');
             warning.className = warningClass;
             warning.textContent = message;
             inp.parentNode.appendChild(document.createElement('br'));
             inp.parentNode.appendChild(warning);
+>>>>>>> 433823e76cc3fa6562e99f7c8288fc7cf2bdfc1b
         },
         // Add clock widget to a given field
         addClock: function(inp) {
@@ -112,7 +130,11 @@
             inp.parentNode.insertBefore(shortcuts_span, inp.nextSibling);
             var now_link = document.createElement('a');
             now_link.setAttribute('href', "#");
+<<<<<<< HEAD
+            now_link.appendChild(document.createTextNode(gettext('Now')));
+=======
             now_link.textContent = gettext('Now');
+>>>>>>> 433823e76cc3fa6562e99f7c8288fc7cf2bdfc1b
             now_link.addEventListener('click', function(e) {
                 e.preventDefault();
                 DateTimeShortcuts.handleClockQuicklink(num, -1);
@@ -342,7 +364,11 @@
                 e.preventDefault();
                 DateTimeShortcuts.dismissCalendar(num);
             });
+<<<<<<< HEAD
+            django.jQuery(document).on('keyup', function(event) {
+=======
             document.addEventListener('keyup', function(event) {
+>>>>>>> 433823e76cc3fa6562e99f7c8288fc7cf2bdfc1b
                 if (event.which === 27) {
                     // ESC key closes popup
                     DateTimeShortcuts.dismissCalendar(num);
@@ -398,11 +424,19 @@
         handleCalendarCallback: function(num) {
             var format = get_format('DATE_INPUT_FORMATS')[0];
             // the format needs to be escaped a little
+<<<<<<< HEAD
+            format = format.replace('\\', '\\\\');
+            format = format.replace('\r', '\\r');
+            format = format.replace('\n', '\\n');
+            format = format.replace('\t', '\\t');
+            format = format.replace("'", "\\'");
+=======
             format = format.replace('\\', '\\\\')
                 .replace('\r', '\\r')
                 .replace('\n', '\\n')
                 .replace('\t', '\\t')
                 .replace("'", "\\'");
+>>>>>>> 433823e76cc3fa6562e99f7c8288fc7cf2bdfc1b
             return function(y, m, d) {
                 DateTimeShortcuts.calendarInputs[num].value = new Date(y, m - 1, d).strftime(format);
                 DateTimeShortcuts.calendarInputs[num].focus();

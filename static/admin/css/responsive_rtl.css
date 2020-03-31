@@ -77,8 +77,11 @@
         margin-left: 0;
         margin-right: 15px;
     }
+<<<<<<< HEAD
+=======
 
     [dir="rtl"] .aligned ul {
         margin-right: 0;
     }
+>>>>>>> 433823e76cc3fa6562e99f7c8288fc7cf2bdfc1b
 }
