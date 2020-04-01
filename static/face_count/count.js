@@ -35,7 +35,8 @@ const handleSuccess = function (stream) {
 
 function captureSnapshotAndSendImg() {
     const context = snapshotCanvas.getContext('2d')
-    context.drawImage(player, 0, 0, 1280, 720)
+    // context.drawImage(player, 0, 0, 1280, 720)
+    context.drawImage(document.getElementById('image'),0,0,1280,720)
     return new Promise(function (resolve, reject) {
         const imgBlob = snapshotCanvas.toDataURL("image/png", 1.0);
         sendImg(imgBlob).then(

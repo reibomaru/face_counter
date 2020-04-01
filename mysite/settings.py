@@ -26,7 +26,9 @@ SECRET_KEY = 'w^#779p6o0b&+!5r6y$!@lyiu(fxtnc5f1flln6g8o%x@!hbtl'
 DEBUG = True
 
 ALLOWED_HOSTS = [
-        'ec2-13-113-18-62.ap-northeast-1.compute.amazonaws.com'
+        'ec2-13-113-18-62.ap-northeast-1.compute.amazonaws.com',
+        '127.0.0.1',
+        'localhost'
         ]
 
 
@@ -81,7 +83,7 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 DATABASES = {
         'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'face_count',
+        'NAME': 'face_counter',
         'USER': 'root',
         'PASSWORD':'Reibo1998@',
         'HOST': '',
@@ -128,8 +130,3 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-STATICFILES_DIRS = (
-    [
-        os.path.join(BASE_DIR, "static"),
-    ]
-)
