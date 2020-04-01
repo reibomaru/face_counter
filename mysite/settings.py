@@ -26,9 +26,14 @@ SECRET_KEY = 'w^#779p6o0b&+!5r6y$!@lyiu(fxtnc5f1flln6g8o%x@!hbtl'
 DEBUG = True
 
 ALLOWED_HOSTS = [
+<<<<<<< Updated upstream
         'ec2-13-113-18-62.ap-northeast-1.compute.amazonaws.com',
         '127.0.0.1',
         'localhost'
+=======
+        'ec2-52-199-191-215.ap-northeast-1.compute.amazonaws.com',
+        '52.199.191.215'
+>>>>>>> Stashed changes
         ]
 
 
