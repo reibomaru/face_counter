@@ -23,8 +23,8 @@ const csrftoken = getCookie('csrftoken')
 
 document.addEventListener('DOMContentLoaded', function () {
     renderHTMLFromData(face_count_data)
-    navigator.mediaDevices.getUserMedia({ video: { width: { exact: 128 }, height: { exact: 72 }} })
-        .then(handleSuccess);
+    // navigator.mediaDevices.getUserMedia({ video: { width: 128, height: 72 } })
+    //     .then(handleSuccess);
 })
 
 const handleSuccess = function (stream) {
@@ -35,8 +35,7 @@ const handleSuccess = function (stream) {
 
 function captureSnapshotAndSendImg() {
     const context = snapshotCanvas.getContext('2d')
-    // context.drawImage(player, 0, 0, 1280, 720)
-    context.drawImage(document.getElementById('image'),0,0,1280,720)
+    context.drawImage( document.getElementById('image') , 0, 0, 1280, 720)
     return new Promise(function (resolve, reject) {
         const imgBlob = snapshotCanvas.toDataURL("image/png", 1.0);
         sendImg(imgBlob).then(
