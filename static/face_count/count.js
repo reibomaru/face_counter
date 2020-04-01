@@ -19,7 +19,7 @@ let face_count_data = {
 
 let intervalID = null
 const httpRequest = new XMLHttpRequest();
-const csrftoken = getCookie('csrftoken')
+const csrftoken = document.getElementsByName('csrfmiddlewaretoken')[0].value
 
 document.addEventListener('DOMContentLoaded', function () {
     renderHTMLFromData(face_count_data)
@@ -92,12 +92,12 @@ count_stop_btn.addEventListener('click', function () {
             clearInterval(intervalID)
         }
     )
-    videoTracks.forEach(function (track) { track.stop() });
+    // videoTracks.forEach(function (track) { track.stop() });
 })
 
 function sendStart() {
     return new Promise(function (resolve, reject) {
-        httpRequest.open('GET', '/face_count/start_count/')
+        httpRequest.open('GET', '/start_count/')
         httpRequest.send()
         httpRequest.onreadystatechange = function () {
             if (httpRequest.readyState === 4) {
@@ -114,7 +114,7 @@ function sendStart() {
 
 function sendStop() {
     return new Promise(function (resolve, reject) {
-        httpRequest.open('GET', '/face_count/stop_count/')
+        httpRequest.open('GET', '/stop_count/')
         httpRequest.send()
         httpRequest.onreadystatechange = function () {
             if (httpRequest.readyState === 4) {
@@ -134,7 +134,7 @@ function sendImg(imgBlob) {
         formdata.append('img', imgBlob)
         formdata.append('height', snapshotCanvas.height)
         formdata.append('width', snapshotCanvas.width)
-        httpRequest.open('POST', '/face_count/send_img/')
+        httpRequest.open('POST', '/send_img/')
         httpRequest.setRequestHeader("X-CSRFToken", csrftoken)
         httpRequest.send(formdata)
         httpRequest.onreadystatechange = function () {
@@ -176,20 +176,4 @@ function renderStartDateAndTime(unixtime) {
     let dateTime = new Date(unixtime * 1000);
     display_start_date.textContent = dateTime.toLocaleDateString('ja-JP')
     display_start_time.textContent = dateTime.toLocaleTimeString('ja-JP')
-}
-
-function getCookie(cname) {
-    const name = cname + "=";
-    const decodedCookie = decodeURIComponent(document.cookie);
-    let ca = decodedCookie.split(';');
-    for (var i = 0; i < ca.length; i++) {
-        var c = ca[i];
-        while (c.charAt(0) == ' ') {
-            c = c.substring(1);
-        }
-        if (c.indexOf(name) == 0) {
-            return c.substring(name.length, c.length);
-        }
-    }
-    return "";
 }
