@@ -92,12 +92,12 @@ count_stop_btn.addEventListener('click', function () {
             clearInterval(intervalID)
         }
     )
-    videoTracks.forEach(function (track) { track.stop() });
+    // videoTracks.forEach(function (track) { track.stop() });
 })
 
 function sendStart() {
     return new Promise(function (resolve, reject) {
-        httpRequest.open('GET', '/face_count/start_count/')
+        httpRequest.open('GET', '/start_count/')
         httpRequest.send()
         httpRequest.onreadystatechange = function () {
             if (httpRequest.readyState === 4) {
@@ -114,7 +114,7 @@ function sendStart() {
 
 function sendStop() {
     return new Promise(function (resolve, reject) {
-        httpRequest.open('GET', '/face_count/stop_count/')
+        httpRequest.open('GET', '/stop_count/')
         httpRequest.send()
         httpRequest.onreadystatechange = function () {
             if (httpRequest.readyState === 4) {
@@ -134,7 +134,7 @@ function sendImg(imgBlob) {
         formdata.append('img', imgBlob)
         formdata.append('height', snapshotCanvas.height)
         formdata.append('width', snapshotCanvas.width)
-        httpRequest.open('POST', '/face_count/send_img/')
+        httpRequest.open('POST', '/send_img/')
         httpRequest.setRequestHeader("X-CSRFToken", csrftoken)
         httpRequest.send(formdata)
         httpRequest.onreadystatechange = function () {
