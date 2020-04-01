@@ -19,7 +19,7 @@ let face_count_data = {
 
 let intervalID = null
 const httpRequest = new XMLHttpRequest();
-const csrftoken = getCookie('csrftoken')
+const csrftoken = document.getElementsByName('csrfmiddlewaretoken')[0].value
 
 document.addEventListener('DOMContentLoaded', function () {
     renderHTMLFromData(face_count_data)
@@ -176,20 +176,4 @@ function renderStartDateAndTime(unixtime) {
     let dateTime = new Date(unixtime * 1000);
     display_start_date.textContent = dateTime.toLocaleDateString('ja-JP')
     display_start_time.textContent = dateTime.toLocaleTimeString('ja-JP')
-}
-
-function getCookie(cname) {
-    const name = cname + "=";
-    const decodedCookie = decodeURIComponent(document.cookie);
-    let ca = decodedCookie.split(';');
-    for (var i = 0; i < ca.length; i++) {
-        var c = ca[i];
-        while (c.charAt(0) == ' ') {
-            c = c.substring(1);
-        }
-        if (c.indexOf(name) == 0) {
-            return c.substring(name.length, c.length);
-        }
-    }
-    return "";
 }

@@ -14,7 +14,10 @@ from face_count.models import Count
 
 count_dict = {
     'face_count': 0,
-    'eye_count': 0
+    'eye_count': 0,
+    'start_unix_time':time.time(),
+    'finish_unix_time':time.time(),
+
 }
 face_cascade = cv2.CascadeClassifier(
     BASE_DIR + '/face_count/src/haarcascade_frontalface_default.xml')
