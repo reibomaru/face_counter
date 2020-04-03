@@ -31,6 +31,7 @@ document.addEventListener('DOMContentLoaded', function () {
 })
 
 count_start_btn.addEventListener('click', function () {
+    renderHTMLFromData(face_count_data)
     sendStart().then(
         function () {
             console.log('正常にカウントは開始されました。')
@@ -73,7 +74,6 @@ count_restart_btn.addEventListener('click', function () {
                 renderHTMLFromData(response)
             },
             function () {
-                renderHTMLFromData(face_count_data)
                 console.log('カウントを終了します。')
                 setStatusToInactive()
                 clearInterval(intervalID)

@@ -17,7 +17,6 @@ count_dict = {
     'eye_count': 0,
     'start_unix_time':time.time(),
     'finish_unix_time':time.time(),
-
 }
 face_cascade = cv2.CascadeClassifier(
     BASE_DIR + '/face_count/src/haarcascade_frontalface_default.xml')
@@ -31,6 +30,8 @@ def index(request):
 
 def count(request):
     global count_dict
+    count_dict['face_count'] = 0
+    count_dict['eye_count'] = 0
     count_dict['start_unix_time'] = time.time()
     return HttpResponse('OK')
 
