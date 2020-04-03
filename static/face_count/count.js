@@ -30,14 +30,15 @@ document.addEventListener('DOMContentLoaded', function () {
 const handleSuccess = function (stream) {
     console.log(stream)
     player.srcObject = stream;
-    videoTracks = stream.getVideoTracks();
+    // videoTracks = stream.getVideoTracks();
 };
 
 function captureSnapshotAndSendImg() {
     const context = snapshotCanvas.getContext('2d')
-    context.drawImage( document.getElementById('image') , 0, 0, 1280, 720)
+    context.drawImage( document.getElementById('image') , 0, 0, 640, 360)
     return new Promise(function (resolve, reject) {
         const imgBlob = snapshotCanvas.toDataURL("image/png", 1.0);
+        console.log(imgBlob)
         sendImg(imgBlob).then(
             function (response) {
                 console.log('画像が正常に送信できています')
@@ -129,6 +130,7 @@ function sendStop() {
 }
 
 function sendImg(imgBlob) {
+    console.log('colled sendImg()')
     return new Promise(function (resolve, reject) {
         formdata = new FormData()
         formdata.append('img', imgBlob)
@@ -138,6 +140,7 @@ function sendImg(imgBlob) {
         httpRequest.setRequestHeader("X-CSRFToken", csrftoken)
         httpRequest.send(formdata)
         httpRequest.onreadystatechange = function () {
+            console.log('response have come')
             if (httpRequest.readyState === 4) {
                 if (httpRequest.status === 200) {
                     let json = JSON.parse(httpRequest.responseText || 'null')

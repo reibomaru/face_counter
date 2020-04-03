@@ -89,9 +89,11 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'face_count',
         'USER': 'root',
-        'PASSWORD':'Reibo1998@',
-        'HOST': '',
-        'PORT': '',
+        # 'PASSWORD':'Reibo1998@',
+        # 'HOST':'10.0.11.89'
+        'PASSWORD':'P@ssw0rd',
+        'HOST': '10.0.21.134',
+        'PORT': '3306',
     }
 }
 

@@ -44,21 +44,22 @@ def stop(request):
 
 def analize_img(request):
     global count_dict
-    request_dict = request.POST
-    img_base64 = request_dict['img']
-    r = base64.b64decode(img_base64.replace('data:image/png;base64,', ''))
-    pil_img = Image.open(io.BytesIO(r))
-    img_np = np.asarray(pil_img)
-    img_np = cv2.cvtColor(img_np, cv2.COLOR_RGB2GRAY)
-    cv2.imwrite('python.png', img_np)
-    faces = face_cascade.detectMultiScale(img_np, 1.3, 5)
-    if type(faces) != tuple:
-        count_up_face(len(faces))
-        for x, y, w, h in faces:
-            face_gray = img_np[y: y + h, x: x + w]
-            eyes = eye_cascade.detectMultiScale(face_gray)
-            if type(eyes) != tuple:
-                count_up_eye()
+    if(request.method == 'POST'):
+        request_dict = request.POST
+        img_base64 = request_dict.get('img')
+        r = base64.b64decode(img_base64.replace('data:image/png;base64,', ''))
+        pil_img = Image.open(io.BytesIO(r))
+        img_np = np.asarray(pil_img)
+        img_np = cv2.cvtColor(img_np, cv2.COLOR_RGB2GRAY)
+        cv2.imwrite('python.png', img_np)
+        faces = face_cascade.detectMultiScale(img_np, 1.3, 5)
+        if type(faces) != tuple:
+            count_up_face(len(faces))
+            for x, y, w, h in faces:
+                face_gray = img_np[y: y + h, x: x + w]
+                eyes = eye_cascade.detectMultiScale(face_gray)
+                if type(eyes) != tuple:
+                    count_up_eye()
     return JsonResponse(count_dict)
 
 
