@@ -19,8 +19,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'w^#779p6o0b&+!5r6y$!@lyiu(fxtnc5f1flln6g8o%x@!hbtl'
+try:
+    from .local_settings import *
+except ImportError:
+    pass
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -90,7 +92,7 @@ DATABASES = {
         'NAME': 'face_count',
         'USER': 'root',
         # 'PASSWORD':'Reibo1998@',
-        # 'HOST':'10.0.11.89'
+        # 'HOST':''
         'PASSWORD':'P@ssw0rd',
         'HOST': '10.0.21.134',
         'PORT': '3306',
