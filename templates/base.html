@@ -55,8 +55,16 @@
             カウント終了
         </button>
     </div>
-    <video id="player" controls autoplay></video>
-    <canvas id="snapshot" width=1280 height=720></canvas>
+    <div class='main'>
+        <button class='btn btn-blue' id='deactive_camera_btn'>
+            画面停止
+        </button>
+        <button class='btn btn-blue' id='active_camera_btn'>
+            画面開始
+        </button>
+    </div>
+    <video id="player" width=1280 height=720 controls autoplay></video>
+    <canvas id="snapshot" width=640 height=360></canvas>
     {% csrf_token %}
     <script src="{% static 'face_count/count.js' %}"></script>
 </body>
