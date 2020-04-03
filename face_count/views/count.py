@@ -62,7 +62,6 @@ def analize_img(request):
                     count_up_eye()
     return JsonResponse(count_dict)
 
-
 def record_count(count):
     data_title = 'データ：' + str(timezone.now())
     Count.objects.create(
