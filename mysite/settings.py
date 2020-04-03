@@ -91,11 +91,11 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'face_count',
         'USER': 'root',
-        'PASSWORD':'Reibo1998@',
-        'HOST':''
-        # 'PASSWORD':'P@ssw0rd',
-        # 'HOST': '10.0.21.134',
-        # 'PORT': '3306',
+        # 'PASSWORD':'Reibo1998@',
+        # 'HOST':''
+        'PASSWORD':'P@ssw0rd',
+        'HOST': '10.0.21.134',
+        'PORT': '3306',
     }
 }
 
