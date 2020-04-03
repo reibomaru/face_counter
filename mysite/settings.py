@@ -20,7 +20,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 try:
-    from .local_settings import *
+    from .local_settings import SECRET_KEY, password, host, port, user
 except ImportError:
     pass
 
@@ -90,8 +90,10 @@ DATABASES = {
         'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'face_count',
-        'USER': 'root',
-        'PASSWORD':'Reibo1998@',
+        'USER': user,
+        'PASSWORD': password,
+        'HOST': host,
+        'PORT': port
     }
 }
 
