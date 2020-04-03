@@ -7,10 +7,13 @@ const count_start_btn = document.getElementById('count_start_btn')
 const count_stop_btn = document.getElementById('count_stop_btn')
 const count_terminate_btn = document.getElementById('count_terminate_btn')
 const count_restart_btn = document.getElementById('count_restart_btn')
+const active_camera_btn = document.getElementById('active_camera_btn')
+const deactive_camera_btn = document.getElementById('deactive_camera_btn')
 
 const player = document.getElementById('player');
 const snapshotCanvas = document.getElementById('snapshot');
-var videoTracks;
+var videoTracks
+// let videoStream = null
 
 
 let face_count_data = {
@@ -28,6 +31,19 @@ document.addEventListener('DOMContentLoaded', function () {
     setStatusToInactive()
     navigator.mediaDevices.getUserMedia({ video: { width: 1280, height: 720 } })
         .then(handleSuccess);
+})
+
+active_camera_btn.addEventListener('click', function () {
+    navigator.mediaDevices.getUserMedia({ video: { width: 1280, height: 720 } })
+        .then(handleSuccess);
+    setStatusToInactive()
+})
+
+deactive_camera_btn.addEventListener('click', function () {
+    for (let i = 0; i < videoTracks.length; i++){
+        videoTracks[i].stop()
+    }
+    setStatusToInactiveAll()
 })
 
 count_start_btn.addEventListener('click', function () {
@@ -96,7 +112,6 @@ count_terminate_btn.addEventListener('click', function () {
             clearInterval(intervalID)
         }
     )
-    // videoTracks.forEach(function (track) { track.stop() });
 })
 
 function sendStart() {
@@ -216,6 +231,17 @@ function setStatusToInactive() {
     count_stop_btn.disabled = true
     count_restart_btn.disabled = true
     count_terminate_btn.disabled = true
+    active_camera_btn.disabled = false
+    deactive_camera_btn.disabled = true
+}
+
+function setStatusToInactiveAll() {
+    count_start_btn.disabled = true
+    count_stop_btn.disabled = false
+    count_restart_btn.disabled = true
+    count_terminate_btn.disabled = false
+    active_camera_btn.disabled = false
+    deactive_camera_btn.disabled = true
 }
 
 function setStatusToCounting() {
@@ -223,6 +249,8 @@ function setStatusToCounting() {
     count_stop_btn.disabled = false
     count_restart_btn.disabled = true
     count_terminate_btn.disabled = false
+    active_camera_btn.disabled = true
+    deactive_camera_btn.disabled = true
 }
 
 function setStatusToStopped() {
@@ -230,4 +258,6 @@ function setStatusToStopped() {
     count_stop_btn.disabled = true
     count_restart_btn.disabled = false
     count_terminate_btn.disabled = false
+    active_camera_btn.disabled = true
+    deactive_camera_btn.disabled = true
 }
