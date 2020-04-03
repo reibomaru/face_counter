@@ -25,6 +25,7 @@ const csrftoken = document.getElementsByName('csrfmiddlewaretoken')[0].value
 
 document.addEventListener('DOMContentLoaded', function () {
     renderHTMLFromData(face_count_data)
+    setStatusToInactive()
     navigator.mediaDevices.getUserMedia({ video: { width: 1280, height: 720 } })
         .then(handleSuccess);
 })
@@ -40,6 +41,7 @@ count_start_btn.addEventListener('click', function () {
         }
     ).then(
         function () {
+            setStatusToCounting()
             intervalID = setInterval(function () {
                 captureSnapshotAndSendImg().then(
                     function (response) {
@@ -49,6 +51,7 @@ count_start_btn.addEventListener('click', function () {
                     function () {
                         renderHTMLFromData(face_count_data)
                         console.log('カウントを終了します。')
+                        setStatusToInactive()
                         clearInterval(intervalID)
                     }
                 )
@@ -59,6 +62,7 @@ count_start_btn.addEventListener('click', function () {
 
 count_stop_btn.addEventListener('click', function () {
     clearInterval(intervalID)
+    setStatusToStopped()
 })
 
 count_restart_btn.addEventListener('click', function () {
@@ -71,20 +75,24 @@ count_restart_btn.addEventListener('click', function () {
             function () {
                 renderHTMLFromData(face_count_data)
                 console.log('カウントを終了します。')
+                setStatusToInactive()
                 clearInterval(intervalID)
             }
         )
     }, 3000);
+    setStatusToCounting()
 })
 
 count_terminate_btn.addEventListener('click', function () {
     sendTerminate().then(
         function () {
             console.log('正常にカウントは停止されました。')
+            setStatusToInactive()
             clearInterval(intervalID)
         },
         function () {
             console.log('カウントの停止に異常がありました。')
+            setStatusToCounting()
             clearInterval(intervalID)
         }
     )
@@ -201,4 +209,25 @@ function renderStartDateAndTime(unixtime) {
     let dateTime = new Date(unixtime * 1000);
     display_start_date.textContent = dateTime.toLocaleDateString('ja-JP')
     display_start_time.textContent = dateTime.toLocaleTimeString('ja-JP')
+}
+
+function setStatusToInactive() {
+    count_start_btn.disabled = false
+    count_stop_btn.disabled = true
+    count_restart_btn.disabled = true
+    count_terminate_btn.disabled = true
+}
+
+function setStatusToCounting() {
+    count_start_btn.disabled = true
+    count_stop_btn.disabled = false
+    count_restart_btn.disabled = true
+    count_terminate_btn.disabled = false
+}
+
+function setStatusToStopped() {
+    count_start_btn.disabled = true
+    count_stop_btn.disabled = true
+    count_restart_btn.disabled = false
+    count_terminate_btn.disabled = false
 }

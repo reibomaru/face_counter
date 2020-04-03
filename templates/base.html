@@ -1,6 +1,7 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang='en'>
+
 <head>
     <meta charset='UTF-8'>
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
@@ -9,6 +10,7 @@
     <link rel='stylesheet' href="{% static 'face_count/style.css' %}">
 </head>
 <header class="headgamen">Face Analisis</header>
+
 <body>
     <div class="main">
         <!-- <img src="{% static 'face_count/sample.png' %}" id='image'> -->
@@ -37,41 +39,26 @@
         <p>回</p>
     </div>
     <div class="main">
-        <a 
-          class="btn btn-green" 
-          id="count_start_btn"
-        >
-        カウント開始
-        </a>
-        <!-- <a 
-          class="btn btn-blue" 
-          href='http://127.0.0.1:8000/face_count/face_auth/' 
-          target="_blank"
-        >
-        カメラ起動
-        </a> -->
-        <a
-          class="btn btn-orange"
-          id="count_stop_btn"
-        >
-        カウント停止
-        </a>
-        <a
-          class="btn btn-green"
-          id="count_restart_btn"
-        >
-        カウント再開
-        </a>
-        <a
-          class="btn btn-orange"
-          id="count_terminate_btn"
-        >
-        カウント終了
-        </a>
-    </div>    
+        <button class="btn btn-green" id="count_start_btn">
+            カウント開始
+        </button>
+        <!-- <button class="btn btn-blue" href='http://127.0.0.1:8000/face_count/face_auth/' target="_blank">
+            カメラ起動
+        </button> -->
+        <button class="btn btn-orange" id="count_stop_btn">
+            カウント停止
+        </button>
+        <button class="btn btn-green" id="count_restart_btn">
+            カウント再開
+        </button>
+        <button class="btn btn-orange" id="count_terminate_btn">
+            カウント終了
+        </button>
+    </div>
     <video id="player" controls autoplay></video>
     <canvas id="snapshot" width=1280 height=720></canvas>
     {% csrf_token %}
     <script src="{% static 'face_count/count.js' %}"></script>
 </body>
+
 </html>

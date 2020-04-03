@@ -15,17 +15,27 @@
 }
 
 .btn{
-  display: inline-block;
-  padding: 0.5em 1em;
-  text-decoration: none;
-  color: #FFF;
-  border-radius: 3px;
-  cursor: pointer;
+    display: inline-block;
+    padding: 0.5em 1em;
+    text-decoration: none;
+    color: #FFF;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.btn:disabled{
+    display: inline-block;
+    padding: 0.5em 1em;
+    text-decoration: none;
+    color: #FFF;
+    border-radius: 3px;
+    background-color: #cccccc;
 }
 
 .btn-blue{
-    background: #668ad8;/*ボタン色*/
+    background-color: #668ad8;/*ボタン色*/
 }
+
 
 .btn-orange{
     background-color: #fd9535;
