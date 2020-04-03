@@ -5,11 +5,13 @@
     <meta charset='UTF-8'>
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
     <title>Face Analysis</title>
-    <link rel='stylesheet' href="{% static 'style.css' %}">
+    <link rel="icon" href="{% static 'face_count/favicon.ico' %}">
+    <link rel='stylesheet' href="{% static 'face_count/style.css' %}">
 </head>
 <header class="headgamen">Face Analisis</header>
 <body>
     <div class="main">
+        <!-- <img src="{% static 'face_count/sample.png' %}" id='image'> -->
         <div>
             <p>計測開始日時: </p>
             <p id='display_start_date'></p>
@@ -57,6 +59,7 @@
     </div>    
     <video id="player" controls autoplay></video>
     <canvas id="snapshot" width=1280 height=720></canvas>
-    <script src="{% static 'count.js' %}"></script>
+    {% csrf_token %}
+    <script src="{% static 'face_count/count.js' %}"></script>
 </body>
 </html>

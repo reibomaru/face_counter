@@ -26,7 +26,11 @@ SECRET_KEY = 'w^#779p6o0b&+!5r6y$!@lyiu(fxtnc5f1flln6g8o%x@!hbtl'
 DEBUG = True
 
 ALLOWED_HOSTS = [
-        'ec2-13-113-18-62.ap-northeast-1.compute.amazonaws.com'
+        'ec2-52-199-191-215.ap-northeast-1.compute.amazonaws.com',
+        '52.199.191.215',
+        '10.0.11.89',
+        'reibomaru-rachel.tk',
+        '127.0.0.1'
         ]
 
 
@@ -53,6 +57,8 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'mysite.urls'
+
+CSRF_COOKIE_HTTPONLY = True
 
 TEMPLATES = [
     {
@@ -83,9 +89,11 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'face_count',
         'USER': 'root',
-        'PASSWORD':'Reibo1998@',
-        'HOST': '',
-        'PORT': '',
+        # 'PASSWORD':'Reibo1998@',
+        # 'HOST':'10.0.11.89'
+        'PASSWORD':'P@ssw0rd',
+        'HOST': '10.0.21.134',
+        'PORT': '3306',
     }
 }
 
@@ -128,8 +136,3 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-STATICFILES_DIRS = (
-    [
-        os.path.join(BASE_DIR, "static"),
-    ]
-)

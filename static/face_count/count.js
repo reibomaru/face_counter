@@ -19,11 +19,11 @@ let face_count_data = {
 
 let intervalID = null
 const httpRequest = new XMLHttpRequest();
-const csrftoken = getCookie('csrftoken')
+const csrftoken = document.getElementsByName('csrfmiddlewaretoken')[0].value
 
 document.addEventListener('DOMContentLoaded', function () {
     renderHTMLFromData(face_count_data)
-    navigator.mediaDevices.getUserMedia({ video: { width: { exact: 128 }, height: { exact: 72 }} })
+    navigator.mediaDevices.getUserMedia({ video: { width: 1280, height: 720 } })
         .then(handleSuccess);
 })
 
@@ -35,9 +35,10 @@ const handleSuccess = function (stream) {
 
 function captureSnapshotAndSendImg() {
     const context = snapshotCanvas.getContext('2d')
-    context.drawImage(player, 0, 0, 1280, 720)
+    context.drawImage(player, 0, 0, 640, 360)
     return new Promise(function (resolve, reject) {
         const imgBlob = snapshotCanvas.toDataURL("image/png", 1.0);
+        console.log(imgBlob)
         sendImg(imgBlob).then(
             function (response) {
                 console.log('画像が正常に送信できています')
@@ -50,10 +51,10 @@ function captureSnapshotAndSendImg() {
             }
         )
     })
-    
+
 }
 
-count_start_btn.addEventListener('click', function () { 
+count_start_btn.addEventListener('click', function () {
     sendStart().then(
         function () {
             console.log('正常にカウントは開始されました。')
@@ -97,7 +98,7 @@ count_stop_btn.addEventListener('click', function () {
 
 function sendStart() {
     return new Promise(function (resolve, reject) {
-        httpRequest.open('GET', '/face_count/start_count/')
+        httpRequest.open('GET', '/start_count/')
         httpRequest.send()
         httpRequest.onreadystatechange = function () {
             if (httpRequest.readyState === 4) {
@@ -114,7 +115,7 @@ function sendStart() {
 
 function sendStop() {
     return new Promise(function (resolve, reject) {
-        httpRequest.open('GET', '/face_count/stop_count/')
+        httpRequest.open('GET', '/stop_count/')
         httpRequest.send()
         httpRequest.onreadystatechange = function () {
             if (httpRequest.readyState === 4) {
@@ -129,15 +130,17 @@ function sendStop() {
 }
 
 function sendImg(imgBlob) {
+    console.log('colled sendImg()')
     return new Promise(function (resolve, reject) {
         formdata = new FormData()
         formdata.append('img', imgBlob)
         formdata.append('height', snapshotCanvas.height)
         formdata.append('width', snapshotCanvas.width)
-        httpRequest.open('POST', '/face_count/send_img/')
+        httpRequest.open('POST', '/send_img/')
         httpRequest.setRequestHeader("X-CSRFToken", csrftoken)
         httpRequest.send(formdata)
         httpRequest.onreadystatechange = function () {
+            console.log('response have come')
             if (httpRequest.readyState === 4) {
                 if (httpRequest.status === 200) {
                     let json = JSON.parse(httpRequest.responseText || 'null')
@@ -176,20 +179,4 @@ function renderStartDateAndTime(unixtime) {
     let dateTime = new Date(unixtime * 1000);
     display_start_date.textContent = dateTime.toLocaleDateString('ja-JP')
     display_start_time.textContent = dateTime.toLocaleTimeString('ja-JP')
-}
-
-function getCookie(cname) {
-    const name = cname + "=";
-    const decodedCookie = decodeURIComponent(document.cookie);
-    let ca = decodedCookie.split(';');
-    for (var i = 0; i < ca.length; i++) {
-        var c = ca[i];
-        while (c.charAt(0) == ' ') {
-            c = c.substring(1);
-        }
-        if (c.indexOf(name) == 0) {
-            return c.substring(name.length, c.length);
-        }
-    }
-    return "";
 }
