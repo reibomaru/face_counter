@@ -835,6 +835,10 @@ table#change-history tbody th {
     align-items: center;
     padding: 10px 40px;
     background: #417690;
+    height: 40px;
+    padding: 10px 40px;
+    background: #417690;
+    line-height: 40px;
     color: #ffc;
     overflow: hidden;
 }
