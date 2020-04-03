@@ -35,12 +35,11 @@ def count(request):
     return HttpResponse('OK')
 
 
-def stop(request):
+def terminate(request):
     global count_dict
     count_dict['finish_unix_time'] = time.time()
     record_count(count_dict)
     return HttpResponse('OK')
-
 
 def analize_img(request):
     global count_dict

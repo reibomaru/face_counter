@@ -5,6 +5,8 @@ const display_start_date = document.getElementById('display_start_date')
 const display_start_time = document.getElementById('display_start_time')
 const count_start_btn = document.getElementById('count_start_btn')
 const count_stop_btn = document.getElementById('count_stop_btn')
+const count_terminate_btn = document.getElementById('count_terminate_btn')
+const count_restart_btn = document.getElementById('count_restart_btn')
 
 const player = document.getElementById('player');
 const snapshotCanvas = document.getElementById('snapshot');
@@ -26,33 +28,6 @@ document.addEventListener('DOMContentLoaded', function () {
     navigator.mediaDevices.getUserMedia({ video: { width: 1280, height: 720 } })
         .then(handleSuccess);
 })
-
-const handleSuccess = function (stream) {
-    console.log(stream)
-    player.srcObject = stream;
-    videoTracks = stream.getVideoTracks();
-};
-
-function captureSnapshotAndSendImg() {
-    const context = snapshotCanvas.getContext('2d')
-    context.drawImage(player, 0, 0, 640, 360)
-    return new Promise(function (resolve, reject) {
-        const imgBlob = snapshotCanvas.toDataURL("image/png", 1.0);
-        console.log(imgBlob)
-        sendImg(imgBlob).then(
-            function (response) {
-                console.log('画像が正常に送信できています')
-                resolve(response)
-            },
-            function () {
-                console.log('画像が正常に送れないためカウントを終了します。')
-                clearInterval(intervalID)
-                reject()
-            }
-        )
-    })
-
-}
 
 count_start_btn.addEventListener('click', function () {
     sendStart().then(
@@ -83,7 +58,27 @@ count_start_btn.addEventListener('click', function () {
 })
 
 count_stop_btn.addEventListener('click', function () {
-    sendStop().then(
+    clearInterval(intervalID)
+})
+
+count_restart_btn.addEventListener('click', function () {
+    intervalID = setInterval(function () {
+        captureSnapshotAndSendImg().then(
+            function (response) {
+                console.log(response)
+                renderHTMLFromData(response)
+            },
+            function () {
+                renderHTMLFromData(face_count_data)
+                console.log('カウントを終了します。')
+                clearInterval(intervalID)
+            }
+        )
+    }, 3000);
+})
+
+count_terminate_btn.addEventListener('click', function () {
+    sendTerminate().then(
         function () {
             console.log('正常にカウントは停止されました。')
             clearInterval(intervalID)
@@ -93,7 +88,7 @@ count_stop_btn.addEventListener('click', function () {
             clearInterval(intervalID)
         }
     )
-    videoTracks.forEach(function (track) { track.stop() });
+    // videoTracks.forEach(function (track) { track.stop() });
 })
 
 function sendStart() {
@@ -113,9 +108,9 @@ function sendStart() {
     })
 }
 
-function sendStop() {
+function sendTerminate() {
     return new Promise(function (resolve, reject) {
-        httpRequest.open('GET', '/stop_count/')
+        httpRequest.open('GET', '/terminate_count/')
         httpRequest.send()
         httpRequest.onreadystatechange = function () {
             if (httpRequest.readyState === 4) {
@@ -127,6 +122,33 @@ function sendStop() {
             }
         }
     })
+}
+
+function handleSuccess(stream) {
+    // console.log(stream)
+    player.srcObject = stream;
+    videoTracks = stream.getVideoTracks();
+};
+
+function captureSnapshotAndSendImg() {
+    const context = snapshotCanvas.getContext('2d')
+    context.drawImage(player, 0, 0, 640, 360)
+    return new Promise(function (resolve, reject) {
+        const imgBlob = snapshotCanvas.toDataURL("image/png", 1.0);
+        // console.log(imgBlob)
+        sendImg(imgBlob).then(
+            function (response) {
+                console.log('画像が正常に送信できています')
+                resolve(response)
+            },
+            function () {
+                console.log('画像が正常に送れないためカウントを終了します。')
+                clearInterval(intervalID)
+                reject()
+            }
+        )
+    })
+
 }
 
 function sendImg(imgBlob) {
