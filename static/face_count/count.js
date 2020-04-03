@@ -23,19 +23,19 @@ const csrftoken = document.getElementsByName('csrfmiddlewaretoken')[0].value
 
 document.addEventListener('DOMContentLoaded', function () {
     renderHTMLFromData(face_count_data)
-    // navigator.mediaDevices.getUserMedia({ video: { width: 128, height: 72 } })
-    //     .then(handleSuccess);
+    navigator.mediaDevices.getUserMedia({ video: { width: 1280, height: 720 } })
+        .then(handleSuccess);
 })
 
 const handleSuccess = function (stream) {
     console.log(stream)
     player.srcObject = stream;
-    // videoTracks = stream.getVideoTracks();
+    videoTracks = stream.getVideoTracks();
 };
 
 function captureSnapshotAndSendImg() {
     const context = snapshotCanvas.getContext('2d')
-    context.drawImage( document.getElementById('image') , 0, 0, 640, 360)
+    context.drawImage(player, 0, 0, 640, 360)
     return new Promise(function (resolve, reject) {
         const imgBlob = snapshotCanvas.toDataURL("image/png", 1.0);
         console.log(imgBlob)
@@ -51,10 +51,10 @@ function captureSnapshotAndSendImg() {
             }
         )
     })
-    
+
 }
 
-count_start_btn.addEventListener('click', function () { 
+count_start_btn.addEventListener('click', function () {
     sendStart().then(
         function () {
             console.log('正常にカウントは開始されました。')
@@ -93,7 +93,7 @@ count_stop_btn.addEventListener('click', function () {
             clearInterval(intervalID)
         }
     )
-    // videoTracks.forEach(function (track) { track.stop() });
+    videoTracks.forEach(function (track) { track.stop() });
 })
 
 function sendStart() {
