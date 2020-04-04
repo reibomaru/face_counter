@@ -50,7 +50,6 @@ def analize_img(request):
     pil_img = Image.open(io.BytesIO(r))
     img_np = cv2.cvtColor(np.asarray(pil_img), cv2.COLOR_BGR2RGB)
     img_gray_np = cv2.cvtColor(img_np, cv2.COLOR_RGB2GRAY)
-    cv2.imwrite('python.png', img_np)
     faces = face_cascade.detectMultiScale(img_gray_np, 1.3, 5)
     if type(faces) != tuple:
         count_up_face(len(faces))
@@ -63,14 +62,7 @@ def analize_img(request):
                 count_up_eye()
                 for (ex, ey, ew, eh) in eyes:
                     cv2.rectangle(face, (ex, ey),(ex + ew, ey + eh), (0, 255, 0), 2)
-    cv2.imwrite('python1.png', img_np)
     _, img_png = cv2.imencode('.png', img_np)
-    # print(type(img_np))
-    # img_bytes = img_np.tobytes()
-    # count_dict['img_base64'] = base64.b64encode(img_jpg)
-    print(base64.b64encode(img_png)[:20])
-    print(base64.b64encode(img_png).decode("utf-8")[:100])
-    # print(type(img_base64))
     count_dict['img_base64'] = "data:image/png;base64," + base64.b64encode(img_png).decode("utf-8")
     return JsonResponse(count_dict, safe=False)
 
