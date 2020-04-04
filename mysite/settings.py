@@ -35,6 +35,16 @@ ALLOWED_HOSTS = [
         '127.0.0.1'
         ]
 
+DATABASES = {
+        'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'face_count',
+        'USER': user,
+        'PASSWORD':password,
+        'HOST': host,
+        'PORT': port,
+    }
+}
 
 # Application definition
 
@@ -85,17 +95,6 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
-
-DATABASES = {
-        'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'face_count',
-        'USER': user,
-        'PASSWORD': password,
-        'HOST': host,
-        'PORT': port
-    }
-}
 
 
 # Password validation

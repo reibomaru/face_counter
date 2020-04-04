@@ -61,6 +61,8 @@ def analize_img(request):
             eyes = eye_cascade.detectMultiScale(face_gray)
             if type(eyes) != tuple:
                 count_up_eye()
+                for (ex, ey, ew, eh) in eyes:
+                    cv2.rectangle(face, (ex, ey),(ex + ew, ey + eh), (0, 255, 0), 2)
     cv2.imwrite('python1.png', img_np)
     _, img_png = cv2.imencode('.png', img_np)
     # print(type(img_np))

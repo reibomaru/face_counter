@@ -11,10 +11,10 @@ const active_camera_btn = document.getElementById('active_camera_btn')
 const deactive_camera_btn = document.getElementById('deactive_camera_btn')
 
 const player = document.getElementById('player');
-const snapshotCanvas = document.getElementById('snapshot');
-var videoTracks
-// let videoStream = null
-
+const snapshot_canvas = document.getElementById('snapshot_canvas');
+const result_canvas = document.getElementById('result_canvas')
+let videoTracks = null
+let videoStream = null
 
 let face_count_data = {
     face_count: 0,
@@ -34,13 +34,14 @@ document.addEventListener('DOMContentLoaded', function () {
 })
 
 active_camera_btn.addEventListener('click', function () {
-    navigator.mediaDevices.getUserMedia({ video: { width: 1280, height: 720 } })
-        .then(handleSuccess);
+    navigator.mediaDevices.getUserMedia(
+        { video: { width: 1280, height: 720 } }
+    ).then(handleSuccess);
     setStatusToInactive()
 })
 
 deactive_camera_btn.addEventListener('click', function () {
-    for (let i = 0; i < videoTracks.length; i++){
+    for (let i = 0; i < videoTracks.length; i++) {
         videoTracks[i].stop()
     }
     setStatusToInactiveAll()
@@ -50,10 +51,10 @@ count_start_btn.addEventListener('click', function () {
     renderHTMLFromData(face_count_data)
     sendStart().then(
         function () {
-            console.log('正常にカウントは開始されました。')
+            // console.log('正常にカウントは開始されました。')
         },
         function () {
-            console.log('カウントの開始に異常がありました。')
+            // console.log('カウントの開始に異常がありました。')
             clearInterval(intervalID)
         }
     ).then(
@@ -62,12 +63,13 @@ count_start_btn.addEventListener('click', function () {
             intervalID = setInterval(function () {
                 captureSnapshotAndSendImg().then(
                     function (response) {
-                        console.log(response)
+                        // console.log(response)
+                        renderImageFromBase64(response.img_base64)
                         renderHTMLFromData(response)
                     },
                     function () {
                         renderHTMLFromData(face_count_data)
-                        console.log('カウントを終了します。')
+                        // console.log('カウントを終了します。')
                         setStatusToInactive()
                         clearInterval(intervalID)
                     }
@@ -86,11 +88,11 @@ count_restart_btn.addEventListener('click', function () {
     intervalID = setInterval(function () {
         captureSnapshotAndSendImg().then(
             function (response) {
-                console.log(response)
+                // console.log(response)
                 renderHTMLFromData(response)
             },
             function () {
-                console.log('カウントを終了します。')
+                // console.log('カウントを終了します。')
                 setStatusToInactive()
                 clearInterval(intervalID)
             }
@@ -102,12 +104,12 @@ count_restart_btn.addEventListener('click', function () {
 count_terminate_btn.addEventListener('click', function () {
     sendTerminate().then(
         function () {
-            console.log('正常にカウントは停止されました。')
+            // console.log('正常にカウントは停止されました。')
             setStatusToInactive()
             clearInterval(intervalID)
         },
         function () {
-            console.log('カウントの停止に異常がありました。')
+            // console.log('カウントの停止に異常がありました。')
             setStatusToCounting()
             clearInterval(intervalID)
         }
@@ -123,7 +125,7 @@ function sendStart() {
                 if (httpRequest.status === 200) {
                     resolve()
                 } else {
-                    console.log('エラー')
+                    // console.log('エラー')
                     reject()
                 }
             }
@@ -149,23 +151,25 @@ function sendTerminate() {
 
 function handleSuccess(stream) {
     // console.log(stream)
-    player.srcObject = stream;
-    videoTracks = stream.getVideoTracks();
+    videoStream = stream
+    player.srcObject = videoStream
+    videoTracks = videoStream.getVideoTracks();
+    // console.log(videoStream)
 };
 
 function captureSnapshotAndSendImg() {
-    const context = snapshotCanvas.getContext('2d')
+    const context = snapshot_canvas.getContext('2d')
     context.drawImage(player, 0, 0, 640, 360)
     return new Promise(function (resolve, reject) {
-        const imgBlob = snapshotCanvas.toDataURL("image/png", 1.0);
+        const imgBlob = snapshot_canvas.toDataURL("image/png", 1.0);
         // console.log(imgBlob)
         sendImg(imgBlob).then(
             function (response) {
-                console.log('画像が正常に送信できています')
+                // console.log('画像が正常に送信できています')
                 resolve(response)
             },
             function () {
-                console.log('画像が正常に送れないためカウントを終了します。')
+                // console.log('画像が正常に送れないためカウントを終了します。')
                 clearInterval(intervalID)
                 reject()
             }
@@ -175,17 +179,17 @@ function captureSnapshotAndSendImg() {
 }
 
 function sendImg(imgBlob) {
-    console.log('colled sendImg()')
+    // console.log('colled sendImg()')
     return new Promise(function (resolve, reject) {
         formdata = new FormData()
         formdata.append('img', imgBlob)
-        formdata.append('height', snapshotCanvas.height)
-        formdata.append('width', snapshotCanvas.width)
+        formdata.append('height', snapshot_canvas.height)
+        formdata.append('width', snapshot_canvas.width)
         httpRequest.open('POST', '/send_img/')
         httpRequest.setRequestHeader("X-CSRFToken", csrftoken)
         httpRequest.send(formdata)
         httpRequest.onreadystatechange = function () {
-            console.log('response have come')
+            // console.log('response have come')
             if (httpRequest.readyState === 4) {
                 if (httpRequest.status === 200) {
                     let json = JSON.parse(httpRequest.responseText || 'null')
@@ -215,6 +219,15 @@ function renderHTMLFromData(data) {
     renderStartDateAndTime(data.start_unix_time)
 }
 
+function renderImageFromBase64(base64) {
+    const context = result_canvas.getContext('2d')
+    const image = new Image();
+    image.onload = function () {
+        context.drawImage(image, 0, 0);
+    };
+    image.src = base64
+}
+
 function renderStartDateAndTime(unixtime) {
     if (unixtime === null) {
         display_start_date.textContent = '----/-/-'
@@ -231,15 +244,15 @@ function setStatusToInactive() {
     count_stop_btn.disabled = true
     count_restart_btn.disabled = true
     count_terminate_btn.disabled = true
-    active_camera_btn.disabled = false
-    deactive_camera_btn.disabled = true
+    active_camera_btn.disabled = true
+    deactive_camera_btn.disabled = false
 }
 
 function setStatusToInactiveAll() {
     count_start_btn.disabled = true
-    count_stop_btn.disabled = false
+    count_stop_btn.disabled = true
     count_restart_btn.disabled = true
-    count_terminate_btn.disabled = false
+    count_terminate_btn.disabled = true
     active_camera_btn.disabled = false
     deactive_camera_btn.disabled = true
 }
