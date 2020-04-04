@@ -11,7 +11,8 @@ const active_camera_btn = document.getElementById('active_camera_btn')
 const deactive_camera_btn = document.getElementById('deactive_camera_btn')
 
 const player = document.getElementById('player');
-const snapshotCanvas = document.getElementById('snapshot');
+const snapshot_canvas = document.getElementById('snapshot_canvas');
+const result_canvas = document.getElementById('result_canvas')
 let videoTracks = null
 let videoStream = null
 
@@ -63,6 +64,7 @@ count_start_btn.addEventListener('click', function () {
                 captureSnapshotAndSendImg().then(
                     function (response) {
                         // console.log(response)
+                        renderImageFromBase64(response.img_base64)
                         renderHTMLFromData(response)
                     },
                     function () {
@@ -152,14 +154,14 @@ function handleSuccess(stream) {
     videoStream = stream
     player.srcObject = videoStream
     videoTracks = videoStream.getVideoTracks();
-    console.log(videoStream)
+    // console.log(videoStream)
 };
 
 function captureSnapshotAndSendImg() {
-    const context = snapshotCanvas.getContext('2d')
+    const context = snapshot_canvas.getContext('2d')
     context.drawImage(player, 0, 0, 640, 360)
     return new Promise(function (resolve, reject) {
-        const imgBlob = snapshotCanvas.toDataURL("image/png", 1.0);
+        const imgBlob = snapshot_canvas.toDataURL("image/png", 1.0);
         // console.log(imgBlob)
         sendImg(imgBlob).then(
             function (response) {
@@ -181,8 +183,8 @@ function sendImg(imgBlob) {
     return new Promise(function (resolve, reject) {
         formdata = new FormData()
         formdata.append('img', imgBlob)
-        formdata.append('height', snapshotCanvas.height)
-        formdata.append('width', snapshotCanvas.width)
+        formdata.append('height', snapshot_canvas.height)
+        formdata.append('width', snapshot_canvas.width)
         httpRequest.open('POST', '/send_img/')
         httpRequest.setRequestHeader("X-CSRFToken", csrftoken)
         httpRequest.send(formdata)
@@ -215,6 +217,15 @@ function renderHTMLFromData(data) {
     }
     renderCount(data)
     renderStartDateAndTime(data.start_unix_time)
+}
+
+function renderImageFromBase64(base64) {
+    const context = result_canvas.getContext('2d')
+    const image = new Image();
+    image.onload = function () {
+        context.drawImage(image, 0, 0);
+    };
+    image.src = base64
 }
 
 function renderStartDateAndTime(unixtime) {

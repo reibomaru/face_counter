@@ -64,7 +64,8 @@
         </button>
     </div>
     <video id="player" width=1280 height=720 controls autoplay></video>
-    <canvas id="snapshot" width=640 height=360></canvas>
+    <canvas id="snapshot_canvas" width=640 height=360></canvas>
+    <canvas id='result_canvas' width=640 height=360></canvas>
     {% csrf_token %}
     <script src="{% static 'face_count/count.js' %}"></script>
 </body>
