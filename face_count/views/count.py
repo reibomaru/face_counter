@@ -16,7 +16,7 @@ count_dict = {
     'face_count': 0,
     'eye_count': 0,
     'start_unix_time':time.time(),
-    'finish_unix_time':time.time(),
+    'finish_unix_time': None,
 }
 face_cascade = cv2.CascadeClassifier(
     BASE_DIR + '/face_count/src/haarcascade_frontalface_default.xml')
@@ -44,24 +44,27 @@ def terminate(request):
 
 def analize_img(request):
     global count_dict
-    if(request.method == 'POST'):
-        request_dict = request.POST
-        img_base64 = request_dict.get('img')
-        r = base64.b64decode(img_base64.replace('data:image/png;base64,', ''))
-        pil_img = Image.open(io.BytesIO(r))
-        img_np = np.asarray(pil_img)
-        img_np = cv2.cvtColor(img_np, cv2.COLOR_RGB2GRAY)
-        cv2.imwrite('python.png', img_np)
-        faces = face_cascade.detectMultiScale(img_np, 1.3, 5)
-        if type(faces) != tuple:
-            count_up_face(len(faces))
-            for x, y, w, h in faces:
-                face_gray = img_np[y: y + h, x: x + w]
-                eyes = eye_cascade.detectMultiScale(face_gray)
-                if type(eyes) != tuple:
-                    count_up_eye()
-    return JsonResponse(count_dict)
-
+    request_dict = request.POST
+    img_base64 = request_dict.get('img')
+    r = base64.b64decode(img_base64.replace('data:image/png;base64,', ''))
+    pil_img = Image.open(io.BytesIO(r))
+    img_np = cv2.cvtColor(np.asarray(pil_img), cv2.COLOR_BGR2RGB)
+    img_gray_np = cv2.cvtColor(img_np, cv2.COLOR_RGB2GRAY)
+    faces = face_cascade.detectMultiScale(img_gray_np, 1.3, 5)
+    if type(faces) != tuple:
+        count_up_face(len(faces))
+        for x, y, w, h in faces:
+            cv2.rectangle(img_np, (x, y), (x + w, y + h), (255, 0, 0), 2)
+            face = img_np[y: y + h, x: x + w]
+            face_gray = img_gray_np[y: y + h, x: x + w]
+            eyes = eye_cascade.detectMultiScale(face_gray)
+            if type(eyes) != tuple:
+                count_up_eye()
+                for (ex, ey, ew, eh) in eyes:
+                    cv2.rectangle(face, (ex, ey),(ex + ew, ey + eh), (0, 255, 0), 2)
+    _, img_png = cv2.imencode('.png', img_np)
+    count_dict['img_base64'] = "data:image/png;base64," + base64.b64encode(img_png).decode("utf-8")
+    return JsonResponse(count_dict, safe=False)
 
 def record_count(count):
     data_title = 'データ：' + str(timezone.now())

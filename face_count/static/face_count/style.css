@@ -1,4 +1,4 @@
-.headgamen{
+.header{
     padding: 30px;
     font-size: 18px;
     color: white;
@@ -6,26 +6,38 @@
     text-align: center;
 }
 
-.main{
-    text-align: center;
+.row .main-col{
+    padding: 0px;
+    vertical-align: text-bottom;
 }
 
-.main p{
+.result-container p{
     display: inline-block;
+    vertical-align: bottom;
 }
 
-.btn{
-    display: inline-block;
-    padding: 0.5em 1em;
-    text-decoration: none;
-    color: #FFF;
-    border-radius: 3px;
-    cursor: pointer;
+.row .col{
+    padding: 0px; 
+}
+
+.main-row{
+    /* display: inline-block; */
+    height: 600px;
+}
+
+.result-container{
+    margin-top: 80px;
+}
+
+.btn-container{
+    margin-top: 50px;
+}
+
+.btn-control-display-container{
+    margin-top: 10px;
 }
 
 .btn:disabled{
-    display: inline-block;
-    padding: 0.5em 1em;
     text-decoration: none;
     color: #FFF;
     border-radius: 3px;

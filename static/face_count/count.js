@@ -36,12 +36,12 @@ document.addEventListener('DOMContentLoaded', function () {
 active_camera_btn.addEventListener('click', function () {
     navigator.mediaDevices.getUserMedia(
         { video: { width: 1280, height: 720 } }
-    ).then(handleSuccess);                                                                                                                                    
+    ).then(handleSuccess);
     setStatusToInactive()
 })
 
 deactive_camera_btn.addEventListener('click', function () {
-    for (let i = 0; i < videoTracks.length; i++){
+    for (let i = 0; i < videoTracks.length; i++) {
         videoTracks[i].stop()
     }
     setStatusToInactiveAll()

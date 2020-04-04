@@ -20,7 +20,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 try:
-    from .local_settings import *
+    from .local_settings import SECRET_KEY, password, host, port, user
 except ImportError:
     pass
 
@@ -35,6 +35,16 @@ ALLOWED_HOSTS = [
         '127.0.0.1'
         ]
 
+DATABASES = {
+        'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'face_count',
+        'USER': user,
+        'PASSWORD':password,
+        'HOST': host,
+        'PORT': port,
+    }
+}
 
 # Application definition
 
@@ -85,19 +95,6 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
-
-DATABASES = {
-        'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'face_count',
-        'USER': 'root',
-        # 'PASSWORD':'Reibo1998@',
-        # 'HOST':''
-        'PASSWORD':'P@ssw0rd',
-        'HOST': '10.0.21.134',
-        'PORT': '3306',
-    }
-}
 
 
 # Password validation
