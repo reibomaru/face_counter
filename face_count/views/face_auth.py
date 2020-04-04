@@ -32,7 +32,9 @@ def show_result(face_cascade, eye_cascade):
                 cv2.rectangle(face, (ex, ey),
                               (ex + ew, ey + eh), (0, 255, 0), 2)
         _, jpeg = cv2.imencode('.jpg', img)
+        # print(jpeg)
         frame = jpeg.tobytes()
+        print(type(frame))
         yield b'--frame\r\n'b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n'
         key = cv2.waitKey(10)
         if key == 27:  # ESCキーで終了
