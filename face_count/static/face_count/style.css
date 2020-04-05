@@ -4,6 +4,12 @@
     text-align: center;
 }
 
+.footer{
+    font-size: 18px;
+    color: white;
+    text-align: center;
+}
+
 .header-anker{
     line-height: 63px;
     color: white;
