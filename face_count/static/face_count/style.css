@@ -8,6 +8,10 @@
     display: inline;
 }
 
+.footer-text{
+    margin: 0px 100px;
+}
+
 .comment-modal-body .container{
     padding: 30px 0px;
 }
@@ -42,9 +46,17 @@
     -webkit-font-smoothing: subpixel-antialiased;
 }
 
-.comment-modal-body textarea{
+.comment-modal-body form textarea{
     padding: 5px;
     height: 300px;
+}
+
+.comment-modal-body form input[type=text]{
+    padding-left: 5px;
+}
+
+.comment-modal-body form input[type=email]{
+    padding-left: 5px;
 }
 
 .header-anker{
