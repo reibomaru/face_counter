@@ -1,9 +1,12 @@
 .header{
-    padding: 30px;
     font-size: 18px;
     color: white;
-    background-color: green;
     text-align: center;
+}
+
+.header-anker{
+    line-height: 63px;
+    color: white;
 }
 
 .row .main-col{
@@ -59,4 +62,50 @@
 
 #display{
     font-size: 40px;
+}
+
+.maru {
+    height:40px;
+    width:40px;
+    border-radius:50%;
+    line-height:40px;
+    text-align:center;
+}
+
+.number-icon{
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    line-height: 50px;
+    font-size: 20px;
+}
+
+.col .card .card-image{
+    padding: 0px;
+}
+
+.col .card .card-image .card-title{
+    bottom: auto;
+    top: 5px;
+    left: 10px;
+    padding-top: 0px;;
+    padding-left: 50px;
+    line-height: 40px;
+    font-weight: bold;
+}
+
+.number-icon .pulse::before{
+    z-index: 5;
+}
+
+.usage-container{
+    margin:10px 10%;
+}
+
+.usage-container h4{
+    margin: 0;
+}
+
+.usage-container .card{
+    margin:30px 0px 0px;
 }

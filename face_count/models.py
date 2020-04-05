@@ -11,3 +11,13 @@ class Count(models.Model):
 
     def __str__(self):
         return self.data_title
+
+class UsageList(models.Model):
+    list_title = models.CharField(max_length=15, default='タイトル')
+    list_id = models.IntegerField(default=1)
+    list_img = models.ImageField(upload_to='images/')
+    list_content = models.TextField()
+    list_link = models.CharField(max_length=100)
+    list_link_title = models.CharField(max_length=15, default='タイトル')
+    def __str__(self):
+        return self.list_title
