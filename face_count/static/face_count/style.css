@@ -4,10 +4,59 @@
     text-align: center;
 }
 
-.footer{
-    font-size: 18px;
-    color: white;
-    text-align: center;
+.footer-copyright p{
+    display: inline;
+}
+
+.footer-text{
+    margin: 0px 100px;
+}
+
+.comment-modal-body .container{
+    padding: 30px 0px;
+}
+
+.comment-modal-body p{
+    margin: 0px;
+}
+
+.comment-modal {
+    color: black;
+    display: none;
+    position: fixed;
+    z-index: 10;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.5);
+    }
+
+.comment-modal-content{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    background-color: white;
+    width: 800px;
+    height: auto;
+    transform: translate(-50%, -50%);
+    -webkit-font-smoothing: none;
+    -webkit-font-smoothing: antialiased;
+    -webkit-font-smoothing: subpixel-antialiased;
+}
+
+.comment-modal-body form textarea{
+    padding: 5px;
+    height: 300px;
+}
+
+.comment-modal-body form input[type=text]{
+    padding-left: 5px;
+}
+
+.comment-modal-body form input[type=email]{
+    padding-left: 5px;
 }
 
 .header-anker{
