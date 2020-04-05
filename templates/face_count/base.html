@@ -92,11 +92,11 @@
                     <div class="comment-modal-body">
                         <div class='container'>
                             <h4>コメントフォーム</h4>
-                            <form action='/post_comment/' method='POST'>
+                            <form action='/post_comment/' method='POST'>{% csrf_token %}
                                 <p>ニックネーム</p>
                                 <input type='text' name="name" placeholder="ニックネームを記入してください">
                                 <p>Emailアドレス</p>
-                                <input type='email' name="email" placeholder="連絡用のemailを記入してください">
+                                <input type='email' name="mail" placeholder="連絡用のemailを記入してください">
                                 <p>コメント</p>
                                 <textarea name='comment' cols='30' rows='100'
                                     placeholder="コメントを自由に記入してください"></textarea>
