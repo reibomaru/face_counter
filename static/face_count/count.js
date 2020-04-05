@@ -31,17 +31,23 @@ document.addEventListener('DOMContentLoaded', function () {
     setStatusToInactive()
     navigator.mediaDevices.getUserMedia({ video: { width: 1280, height: 720 } })
         .then(handleSuccess);
+    let ctx = snapshot_canvas.getContext('2d')
+    ctx.fillStyle = 'silver';
+    ctx.fillRect(0, 0, 640, 360);
+    ctx = result_canvas.getContext('2d')
+    ctx.fillStyle = 'silver';
+    ctx.fillRect(0, 0, 640, 360);
 })
 
 active_camera_btn.addEventListener('click', function () {
     navigator.mediaDevices.getUserMedia(
         { video: { width: 1280, height: 720 } }
-    ).then(handleSuccess);
+    ).then(handleSuccess);                                                                                                                                    
     setStatusToInactive()
 })
 
 deactive_camera_btn.addEventListener('click', function () {
-    for (let i = 0; i < videoTracks.length; i++) {
+    for (let i = 0; i < videoTracks.length; i++){
         videoTracks[i].stop()
     }
     setStatusToInactiveAll()
