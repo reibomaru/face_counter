@@ -1,31 +1,101 @@
-.headgamen{
-    padding: 30px;
+.header{
     font-size: 18px;
     color: white;
-    background-color: green;
     text-align: center;
 }
 
-.main{
-    text-align: center;
+.footer-copyright p{
+    display: inline;
 }
 
-.main p{
-    display: inline-block;
+.footer-text{
+    margin: 0px 100px;
 }
 
-.btn{
+.comment-modal-body .container{
+    padding: 30px 0px;
+}
+
+.comment-modal-body p{
+    margin: 0px;
+}
+
+.comment-modal {
+    color: black;
+    display: none;
+    position: fixed;
+    z-index: 10;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.5);
+    }
+
+.comment-modal-content{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    background-color: white;
+    width: 800px;
+    height: auto;
+    transform: translate(-50%, -50%);
+    -webkit-font-smoothing: none;
+    -webkit-font-smoothing: antialiased;
+    -webkit-font-smoothing: subpixel-antialiased;
+}
+
+.comment-modal-body form textarea{
+    padding: 5px;
+    height: 300px;
+}
+
+.comment-modal-body form input[type=text]{
+    padding-left: 5px;
+}
+
+.comment-modal-body form input[type=email]{
+    padding-left: 5px;
+}
+
+.header-anker{
+    line-height: 63px;
+    color: white;
+}
+
+.row .main-col{
+    padding: 0px;
+    vertical-align: text-bottom;
+}
+
+.result-container p{
     display: inline-block;
-    padding: 0.5em 1em;
-    text-decoration: none;
-    color: #FFF;
-    border-radius: 3px;
-    cursor: pointer;
+    vertical-align: bottom;
+}
+
+.row .col{
+    padding: 0px; 
+}
+
+.main-row{
+    /* display: inline-block; */
+    height: 600px;
+}
+
+.result-container{
+    margin-top: 80px;
+}
+
+.btn-container{
+    margin-top: 50px;
+}
+
+.btn-control-display-container{
+    margin-top: 10px;
 }
 
 .btn:disabled{
-    display: inline-block;
-    padding: 0.5em 1em;
     text-decoration: none;
     color: #FFF;
     border-radius: 3px;
@@ -47,4 +117,50 @@
 
 #display{
     font-size: 40px;
+}
+
+.maru {
+    height:40px;
+    width:40px;
+    border-radius:50%;
+    line-height:40px;
+    text-align:center;
+}
+
+.number-icon{
+    position: absolute;
+    bottom: 5px;
+    left: 5px;
+    line-height: 50px;
+    font-size: 20px;
+}
+
+.col .card .card-image{
+    padding: 0px;
+}
+
+.col .card .card-image .card-title{
+    bottom: 5px;
+    left: 10px;
+    padding-bottom: 0px;
+    padding-top: 0px;;
+    padding-left: 50px;
+    line-height: 40px;
+    font-weight: bold;
+}
+
+.number-icon .pulse::before{
+    z-index: 5;
+}
+
+.usage-container{
+    margin:10px 10%;
+}
+
+.usage-container h4{
+    margin: 0;
+}
+
+.usage-container .card{
+    margin:30px 0px 0px;
 }
