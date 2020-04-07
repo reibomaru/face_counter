@@ -90,11 +90,6 @@ html{
     padding: 0px; 
 }
 
-.main-row{
-    /* display: inline-block; */
-    height: 600px;
-}
-
 .result-container{
     margin-top: 10%;
 }
