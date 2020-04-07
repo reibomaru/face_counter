@@ -36,7 +36,8 @@ ALLOWED_HOSTS = [
         '52.199.191.215',
         '10.0.11.89',
         'reibomaru-rachel.tk',
-        '127.0.0.1'
+        '127.0.0.1',
+        'localhost'
         ]
 
 DATABASES = {
