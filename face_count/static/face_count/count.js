@@ -29,19 +29,26 @@ const csrftoken = document.getElementsByName('csrfmiddlewaretoken')[0].value
 document.addEventListener('DOMContentLoaded', function () {
     renderHTMLFromData(face_count_data)
     setStatusToInactive()
-    navigator.mediaDevices.getUserMedia({ video: { width: 1280, height: 720 } })
-        .then(handleSuccess);
+    navigator.mediaDevices.getUserMedia(
+        { video: { width: player.width, height: player.height } }
+    ).then(handleSuccess);
+    
+    snapshot_canvas.width = player.width
+    snapshot_canvas.height = player.height
+    result_canvas.width = player.width
+    result_canvas.height = player.height
+    result_canvas
     let ctx = snapshot_canvas.getContext('2d')
     ctx.fillStyle = 'silver';
-    ctx.fillRect(0, 0, 640, 360);
+    ctx.fillRect(0, 0, player.width, player.height);
     ctx = result_canvas.getContext('2d')
     ctx.fillStyle = 'silver';
-    ctx.fillRect(0, 0, 640, 360);
+    ctx.fillRect(0, 0, player.width, player.height);
 })
 
 active_camera_btn.addEventListener('click', function () {
     navigator.mediaDevices.getUserMedia(
-        { video: { width: 1280, height: 720 } }
+        { video: { width: player.width, height: player.height } }
     ).then(handleSuccess);                                                                                                                                    
     setStatusToInactive()
 })
@@ -165,7 +172,7 @@ function handleSuccess(stream) {
 
 function captureSnapshotAndSendImg() {
     const context = snapshot_canvas.getContext('2d')
-    context.drawImage(player, 0, 0, 640, 360)
+    context.drawImage(player, 0, 0, snapshot_canvas.width, snapshot_canvas.height)
     return new Promise(function (resolve, reject) {
         const imgBlob = snapshot_canvas.toDataURL("image/png", 1.0);
         // console.log(imgBlob)
@@ -229,7 +236,7 @@ function renderImageFromBase64(base64) {
     const context = result_canvas.getContext('2d')
     const image = new Image();
     image.onload = function () {
-        context.drawImage(image, 0, 0);
+        context.drawImage(image, 0, 0, result_canvas.width, result_canvas.height);
     };
     image.src = base64
 }
