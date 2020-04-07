@@ -7,7 +7,8 @@
     <meta name='viewport' content='width=device-width, initial-scale=1.0'>
     <title>Face Analysis</title>
     <link rel="icon" href="{% static 'face_count/favicon.ico' %}">
-    <link rel='stylesheet' href="{% static 'face_count/style.css' %}">
+    <link rel="stylesheet" href="{% static 'face_count/style.css' %}">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
 </head>
 
@@ -25,5 +26,89 @@
     {% block content %}
     {% endblock %}
 </body>
-
+        <footer class="page-footer teal darken-2">
+            <div class="container">
+                <div class="row">
+                    <div class="col l6 s12">
+                        <h5 class="white-text">本サイトについて</h5>
+                        <p class="grey-text text-lighten-4">
+                            本サイトは顔検知による看板広告の効果測定アプリのプロトタイプです。ハッカソンにて製作したものを改良してWebアプリにしました。<br>
+                            本サイトへのご意見などございましたら以下のコメントページにてよろしくお願いいたします。
+                        </p>
+                    </div>
+                    <div class="col l4 offset-l2 s12">
+                        <h5 class="white-text">使用したライブラリ</h5>
+                        <ul>
+                            <li>
+                                <a 
+                                  class="grey-text text-lighten-3" 
+                                  href="https://www.djangoproject.com/" 
+                                  target="_blank" 
+                                  rel="noopener noreferrer"
+                                >Django(2.1.1)</a>
+                            </li>
+                            <li>
+                                <a 
+                                  class="grey-text text-lighten-3" 
+                                  href="https://opencv.org/" 
+                                  target="_blank" 
+                                  rel="noopener noreferrer"
+                                >OpenCV(4.1.1)</a>
+                            </li>
+                            <li>
+                                <a 
+                                  class="grey-text text-lighten-3" 
+                                  href="https://pillow.readthedocs.io/en/stable/#" 
+                                  target="_blank" 
+                                  rel="noopener noreferrer"
+                                >Pillow(7.0.0)</a>
+                            </li>
+                            <li>
+                                <a 
+                                  class="grey-text text-lighten-3" 
+                                  href="https://materializecss.com/" 
+                                  target="_blank" 
+                                  rel="noopener noreferrer"
+                                >Materialize(1.0.0)</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-copyright teal darken-3">
+                <div class="container center">
+                    <p class="footer-text">©️ 2020 Rei Sugiura</p>
+                    <a class="footer-text grey-text text-lighten-4 btn" id="comment_modal_btn">コメントを送る</a>
+                    <a 
+                      class="footer-text grey-text text-lighten-4" 
+                      href="https://github.com/reibomaru" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                    >Githubアカウント</a>
+                </div>
+            </div>
+            <div id="comment_modal" class="comment-modal">
+                <div class="comment-modal-content">
+                    <div class="comment-modal-body">
+                        <div class='container'>
+                            <h4>コメントフォーム</h4>
+                            <form action='/post_comment/' method='POST'>{% csrf_token %}
+                                <p>ニックネーム</p>
+                                <input type='text' name="name" placeholder="ニックネームを記入してください">
+                                <p>Emailアドレス</p>
+                                <input type='email' name="mail" placeholder="連絡用のemailを記入してください">
+                                <p>コメント</p>
+                                <textarea name='comment' cols='30' rows='100'
+                                    placeholder="コメントを自由に記入してください"></textarea>
+                                <button class="btn waves-effect waves-light" type="submit" name="action">Submit
+                                    <i class="material-icons right">send</i>
+                                </button>
+                            </form>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <script type='text/javascript' src="{% static 'face_count/base.js' %}"></script>
 </html>

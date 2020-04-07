@@ -21,3 +21,11 @@ class UsageList(models.Model):
     list_link_title = models.CharField(max_length=15, default='タイトル')
     def __str__(self):
         return self.list_title
+
+class Comment(models.Model):
+    name = models.CharField(max_length=30)
+    mail = models.CharField(max_length=30)
+    comment = models.TextField()
+    created_date = models.DateTimeField(blank=True, null=True)
+    def __str__(self):
+        return self.name
