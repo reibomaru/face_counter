@@ -11,6 +11,8 @@ urlpatterns = [
     path('terminate_count/', count.terminate, name='terminate'),
     path('usage/', usage.index, name='usage'),
     path('send_img/', count.analize_img, name='analize_img'),
-    path('post_comment/', base.post_comment, name='post_comment')
+    path('post_comment/', base.post_comment, name='post_comment'),
+    # static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 ]
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
