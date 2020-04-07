@@ -1,6 +1,4 @@
-from django.views.decorators.csrf import requires_csrf_token
-from django.http import HttpResponseServerError
+from django.shortcuts import render
 
-@requires_csrf_token
-def my_customized_server_error(request, template_name='500.html'):
-    return HttpResponseServerError('<h1>Server Error (500)だよー</h1>')
+def server_error(request):
+    return render(request, '500.html',  status=500)

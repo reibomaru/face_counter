@@ -20,3 +20,5 @@ urlpatterns = [
     path('', include('face_count.urls')),
     path('admin/', admin.site.urls),
 ]
+
+handler500 = 'face_count.views.error.server_error'
