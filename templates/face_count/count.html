@@ -2,15 +2,15 @@
 {% load static %}
 {% block content %}
 <div class='row main-row'>
-    <div class='col l9 main-col center'>
+    <div class='col m9 main-col center'>
         <p>カメラプレビュー</p>
         <hr>
-        <video class="center-align center" id="player" width=960 height=540 controls autoplay></video>
+        <video class="responsive-video center-align center" id="player" width=960 height=540 controls autoplay></video>
     </div>
-    <div class='col l3 main-col row'>
+    <div class='col m3 s12 main-col row'>
         <p class="center">分析結果</p>
         <hr>
-        <div class="result-container col offset-l3">
+        <div class="result-container col offset-s3 offset-m2">
             <div>
                 <p>計測開始日時 : </p>
                 <p id='display_start_date'></p>
@@ -68,15 +68,15 @@
     </div>
 </div>
 <div class='row'>
-    <div class='col l6 center'>
+    <div class='col m12 l6 center'>
         <p class="center">スナップショット</p>
         <hr>
-        <canvas id="snapshot_canvas" width=640 height=360></canvas>
+        <canvas class="responsive-canvas" id="snapshot_canvas" width=640 height=360></canvas>
     </div>
-    <div class='col l6 center'>
+    <div class='col m12 l6 center'>
         <p class="center">分析後スナップショット</p>
         <hr>
-        <canvas id='result_canvas' width=640 height=360></canvas>
+        <canvas class="responsive-canvas" id='result_canvas' width=640 height=360></canvas>
     </div>
 </div>
 {% csrf_token %}

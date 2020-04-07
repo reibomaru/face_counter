@@ -5,16 +5,16 @@
 <h4>Face Analysisの使い方</h4>
 {% for usage_elem in usage_list %}
 <div class="row">
-    <div class="col s10 m10">
+    <div class="col s12 m12 l10">
         <div class="card row">
-            <div class="card-image col l8">
+            <div class="card-image col m8 l8">
                 <img src="{{ MEDIA_URL }}{{ usage_elem.list_img }}">
                 <span class="number-icon">
                     <div class="pulse maru teal darken-1 white-text">{{ usage_elem.list_id }}</div>
                 </span>
                 <span class="card-title teal-text darken-1-text">{{ usage_elem.list_title }}</span>
             </div>
-            <div class='col l4'>
+            <div class='col m4 l4'>
                 <div class="card-content">
                     <p>{{ usage_elem.list_content }}</p>
                 </div>
