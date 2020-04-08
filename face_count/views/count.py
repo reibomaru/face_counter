@@ -25,6 +25,7 @@ eye_cascade = cv2.CascadeClassifier(
 
 
 def index(request):
+    adsfadf
     return render(request, 'face_count/count.html')
 
 
