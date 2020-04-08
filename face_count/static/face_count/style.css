@@ -32,6 +32,10 @@ html p{
     margin: 0px 5%;
 }
 
+.btn.comment-btn{
+    font-size: 1rem;
+}
+
 .comment-modal-body .container{
     padding: 30px 0px;
 }
@@ -212,5 +216,9 @@ html p{
     }
     .nav-anker{
         text-align: center;
+    }
+    .copyright-text{
+        float: left;
+        width: 100%;
     }
 }
