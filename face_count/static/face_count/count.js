@@ -32,23 +32,12 @@ document.addEventListener('DOMContentLoaded', function () {
     navigator.mediaDevices.getUserMedia(
         { video: { width: player.width, height: player.height } }
     ).then(handleSuccess);
-    
-    snapshot_canvas.width = player.width
-    snapshot_canvas.height = player.height
-    result_canvas.width = player.width
-    result_canvas.height = player.height
-    result_canvas
-    let ctx = snapshot_canvas.getContext('2d')
-    ctx.fillStyle = 'silver';
-    ctx.fillRect(0, 0, player.width, player.height);
-    ctx = result_canvas.getContext('2d')
-    ctx.fillStyle = 'silver';
-    ctx.fillRect(0, 0, player.width, player.height);
 })
 
 active_camera_btn.addEventListener('click', function () {
     navigator.mediaDevices.getUserMedia(
-        { video: { width: player.width, height: player.height } }
+        { video: { width: 1280, height: 720} }
+        // { video: true }
     ).then(handleSuccess);                                                                                                                                    
     setStatusToInactive()
 })
@@ -163,11 +152,22 @@ function sendTerminate() {
 }
 
 function handleSuccess(stream) {
-    // console.log(stream)
-    videoStream = stream
-    player.srcObject = videoStream
-    videoTracks = videoStream.getVideoTracks();
-    // console.log(videoStream)
+    let mediaWidth = stream.getVideoTracks()[0].getSettings().width
+    let mediaHeight = stream.getVideoTracks()[0].getSettings().height
+    console.log(mediaWidth, mediaHeight)
+    player.srcObject = stream
+    videoTracks = stream.getVideoTracks();
+    
+    snapshot_canvas.width = mediaWidth
+    snapshot_canvas.height = mediaHeight
+    result_canvas.width = mediaWidth
+    result_canvas.height = mediaHeight
+    let ctx = snapshot_canvas.getContext('2d')
+    ctx.fillStyle = 'silver';
+    ctx.fillRect(0, 0, mediaWidth, mediaHeight);
+    ctx = result_canvas.getContext('2d')
+    ctx.fillStyle = 'silver';
+    ctx.fillRect(0, 0, mediaWidth, mediaHeight);
 };
 
 function captureSnapshotAndSendImg() {
