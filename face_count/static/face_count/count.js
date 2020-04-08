@@ -145,7 +145,6 @@ function sendTerminate() {
 function handleSuccess(stream) {
     let mediaWidth = stream.getVideoTracks()[0].getSettings().width
     let mediaHeight = stream.getVideoTracks()[0].getSettings().height
-    console.log(mediaWidth, mediaHeight)
     player.srcObject = stream
     videoTracks = stream.getVideoTracks();
     
