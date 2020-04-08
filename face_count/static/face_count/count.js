@@ -14,7 +14,6 @@ const player = document.getElementById('player');
 const snapshot_canvas = document.getElementById('snapshot_canvas');
 const result_canvas = document.getElementById('result_canvas')
 let videoTracks = null
-let videoStream = null
 
 let face_count_data = {
     face_count: 0,
@@ -30,25 +29,13 @@ document.addEventListener('DOMContentLoaded', function () {
     renderHTMLFromData(face_count_data)
     setStatusToInactive()
     navigator.mediaDevices.getUserMedia(
-        { video: { width: player.width, height: player.height } }
+        { video: { width: 1280, height: 720 } }
     ).then(handleSuccess);
-    
-    snapshot_canvas.width = player.width
-    snapshot_canvas.height = player.height
-    result_canvas.width = player.width
-    result_canvas.height = player.height
-    result_canvas
-    let ctx = snapshot_canvas.getContext('2d')
-    ctx.fillStyle = 'silver';
-    ctx.fillRect(0, 0, player.width, player.height);
-    ctx = result_canvas.getContext('2d')
-    ctx.fillStyle = 'silver';
-    ctx.fillRect(0, 0, player.width, player.height);
 })
 
 active_camera_btn.addEventListener('click', function () {
     navigator.mediaDevices.getUserMedia(
-        { video: { width: player.width, height: player.height } }
+        { video: { width: 1280, height: 720} }
     ).then(handleSuccess);                                                                                                                                    
     setStatusToInactive()
 })
@@ -63,11 +50,8 @@ deactive_camera_btn.addEventListener('click', function () {
 count_start_btn.addEventListener('click', function () {
     renderHTMLFromData(face_count_data)
     sendStart().then(
+        function () {},
         function () {
-            // console.log('正常にカウントは開始されました。')
-        },
-        function () {
-            // console.log('カウントの開始に異常がありました。')
             clearInterval(intervalID)
         }
     ).then(
@@ -76,13 +60,12 @@ count_start_btn.addEventListener('click', function () {
             intervalID = setInterval(function () {
                 captureSnapshotAndSendImg().then(
                     function (response) {
-                        // console.log(response)
                         renderImageFromBase64(response.img_base64)
                         renderHTMLFromData(response)
                     },
                     function () {
                         renderHTMLFromData(face_count_data)
-                        // console.log('カウントを終了します。')
+                        alert('カウントを終了します。')
                         setStatusToInactive()
                         clearInterval(intervalID)
                     }
@@ -101,11 +84,10 @@ count_restart_btn.addEventListener('click', function () {
     intervalID = setInterval(function () {
         captureSnapshotAndSendImg().then(
             function (response) {
-                // console.log(response)
                 renderHTMLFromData(response)
             },
             function () {
-                // console.log('カウントを終了します。')
+                alert('カウントを終了します。')
                 setStatusToInactive()
                 clearInterval(intervalID)
             }
@@ -117,12 +99,11 @@ count_restart_btn.addEventListener('click', function () {
 count_terminate_btn.addEventListener('click', function () {
     sendTerminate().then(
         function () {
-            // console.log('正常にカウントは停止されました。')
             setStatusToInactive()
             clearInterval(intervalID)
         },
         function () {
-            // console.log('カウントの停止に異常がありました。')
+            alert('カウントの停止に異常がありました。')
             setStatusToCounting()
             clearInterval(intervalID)
         }
@@ -138,7 +119,6 @@ function sendStart() {
                 if (httpRequest.status === 200) {
                     resolve()
                 } else {
-                    // console.log('エラー')
                     reject()
                 }
             }
@@ -163,11 +143,21 @@ function sendTerminate() {
 }
 
 function handleSuccess(stream) {
-    // console.log(stream)
-    videoStream = stream
-    player.srcObject = videoStream
-    videoTracks = videoStream.getVideoTracks();
-    // console.log(videoStream)
+    let mediaWidth = stream.getVideoTracks()[0].getSettings().width
+    let mediaHeight = stream.getVideoTracks()[0].getSettings().height
+    player.srcObject = stream
+    videoTracks = stream.getVideoTracks();
+    
+    snapshot_canvas.width = mediaWidth
+    snapshot_canvas.height = mediaHeight
+    result_canvas.width = mediaWidth
+    result_canvas.height = mediaHeight
+    let ctx = snapshot_canvas.getContext('2d')
+    ctx.fillStyle = 'silver';
+    ctx.fillRect(0, 0, mediaWidth, mediaHeight);
+    ctx = result_canvas.getContext('2d')
+    ctx.fillStyle = 'silver';
+    ctx.fillRect(0, 0, mediaWidth, mediaHeight);
 };
 
 function captureSnapshotAndSendImg() {
@@ -175,14 +165,12 @@ function captureSnapshotAndSendImg() {
     context.drawImage(player, 0, 0, snapshot_canvas.width, snapshot_canvas.height)
     return new Promise(function (resolve, reject) {
         const imgBlob = snapshot_canvas.toDataURL("image/png", 1.0);
-        // console.log(imgBlob)
         sendImg(imgBlob).then(
             function (response) {
-                // console.log('画像が正常に送信できています')
                 resolve(response)
             },
             function () {
-                // console.log('画像が正常に送れないためカウントを終了します。')
+                alert('画像が正常に送れないためカウントを終了します。')
                 clearInterval(intervalID)
                 reject()
             }
@@ -192,17 +180,13 @@ function captureSnapshotAndSendImg() {
 }
 
 function sendImg(imgBlob) {
-    // console.log('colled sendImg()')
     return new Promise(function (resolve, reject) {
         formdata = new FormData()
         formdata.append('img', imgBlob)
-        formdata.append('height', snapshot_canvas.height)
-        formdata.append('width', snapshot_canvas.width)
         httpRequest.open('POST', '/send_img/')
         httpRequest.setRequestHeader("X-CSRFToken", csrftoken)
         httpRequest.send(formdata)
         httpRequest.onreadystatechange = function () {
-            // console.log('response have come')
             if (httpRequest.readyState === 4) {
                 if (httpRequest.status === 200) {
                     let json = JSON.parse(httpRequest.responseText || 'null')
