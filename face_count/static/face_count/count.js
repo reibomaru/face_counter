@@ -29,13 +29,13 @@ document.addEventListener('DOMContentLoaded', function () {
     renderHTMLFromData(face_count_data)
     setStatusToInactive()
     navigator.mediaDevices.getUserMedia(
-        { video: { width: 1280, height: 720 } }
+        { video: true}
     ).then(handleSuccess);
 })
 
 active_camera_btn.addEventListener('click', function () {
     navigator.mediaDevices.getUserMedia(
-        { video: { width: 1280, height: 720} }
+        { video: true}
     ).then(handleSuccess);                                                                                                                                    
     setStatusToInactive()
 })
@@ -81,9 +81,13 @@ count_stop_btn.addEventListener('click', function () {
 })
 
 count_restart_btn.addEventListener('click', function () {
+    navigator.mediaDevices.getUserMedia(
+        { video: true }
+    ).then(handleSuccess); 
     intervalID = setInterval(function () {
         captureSnapshotAndSendImg().then(
             function (response) {
+                renderImageFromBase64(response.img_base64)
                 renderHTMLFromData(response)
             },
             function () {
