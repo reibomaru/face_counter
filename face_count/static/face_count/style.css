@@ -2,6 +2,18 @@ html{
     font-size: 16px;
 }
 
+html h4{
+    font-size: 2rem;
+}
+
+html h5{
+    font-size: 1.5rem;
+}
+
+html p{
+    font-size: 0.9375rem;
+}
+
 .header{
     font-size: 1.125rem;
     color: white;
@@ -39,10 +51,6 @@ html{
     width: 100%;
     overflow: auto;
     background-color: rgba(0,0,0,0.5);
-}
-
-.comment-modal h4{
-    font-size: 2rem;
 }
 
 .comment-modal-content{
@@ -117,19 +125,6 @@ html{
     background-color: #cccccc;
 }
 
-.btn-blue{
-    background-color: #668ad8;/*ボタン色*/
-}
-
-
-.btn-orange{
-    background-color: #fd9535;
-}
-
-.btn-green{
-    background-color: #03864c
-}
-
 .maru {
     height:40px;
     width:40px;
@@ -170,7 +165,6 @@ html{
 }
 
 .usage-container h4{
-    font-size: 2rem;
     margin: 0;
 }
 
@@ -212,5 +206,11 @@ html{
     }
     .page-footer{
         margin-top: 50px;
+    }
+    .page-not-found-container{
+        margin: 10% 0px;
+    }
+    .nav-anker{
+        text-align: center;
     }
 }
