@@ -21,12 +21,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 try:
-    from .local_settings import SECRET_KEY, password, host, port, user
+    from .local_settings import SECRET_KEY, password, host, port, user, debug_mode
 except ImportError:
     pass
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = debug_mode
 
 # mimetypes.add_type("text/css", ".css", True)
 # mimetypes.add_type("text/javascript", ".js", True)
@@ -36,7 +36,8 @@ ALLOWED_HOSTS = [
         '52.199.191.215',
         '10.0.11.89',
         'reibomaru-rachel.tk',
-        '127.0.0.1'
+        '127.0.0.1',
+        'localhost'
         ]
 
 DATABASES = {

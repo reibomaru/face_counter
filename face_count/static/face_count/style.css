@@ -1,5 +1,9 @@
+html{
+    font-size: 16px;
+}
+
 .header{
-    font-size: 18px;
+    font-size: 1.125rem;
     color: white;
     text-align: center;
 }
@@ -13,7 +17,7 @@
 }
 
 .footer-text{
-    margin: 0px 100px;
+    margin: 0px 5%;
 }
 
 .comment-modal-body .container{
@@ -35,14 +39,18 @@
     width: 100%;
     overflow: auto;
     background-color: rgba(0,0,0,0.5);
-    }
+}
+
+.comment-modal h4{
+    font-size: 2rem;
+}
 
 .comment-modal-content{
     position: fixed;
     top: 50%;
     left: 50%;
     background-color: white;
-    width: 800px;
+    width: 70%;
     height: auto;
     transform: translate(-50%, -50%);
     -webkit-font-smoothing: none;
@@ -82,17 +90,20 @@
     padding: 0px; 
 }
 
-.main-row{
-    /* display: inline-block; */
-    height: 600px;
+.result-container{
+    margin-top: 10%;
 }
 
-.result-container{
-    margin-top: 80px;
+.result-container p{
+    font-size: 0.9375rem;
 }
 
 .btn-container{
-    margin-top: 50px;
+    margin-top: 10%;
+}
+
+.btn-container button{
+    font-size: 0.625rem;
 }
 
 .btn-control-display-container{
@@ -119,10 +130,6 @@
     background-color: #03864c
 }
 
-#display{
-    font-size: 40px;
-}
-
 .maru {
     height:40px;
     width:40px;
@@ -133,10 +140,10 @@
 
 .number-icon{
     position: absolute;
-    bottom: 5px;
+    top: 5px;
     left: 5px;
     line-height: 50px;
-    font-size: 20px;
+    font-size: 1.5rem;
 }
 
 .col .card .card-image{
@@ -144,12 +151,13 @@
 }
 
 .col .card .card-image .card-title{
-    bottom: 5px;
+    top: 5px;
     left: 10px;
     padding-bottom: 0px;
     padding-top: 0px;;
     padding-left: 50px;
     line-height: 40px;
+    font-size: 1.5rem;
     font-weight: bold;
 }
 
@@ -162,6 +170,7 @@
 }
 
 .usage-container h4{
+    font-size: 2rem;
     margin: 0;
 }
 
@@ -169,6 +178,39 @@
     margin:30px 0px 0px;
 }
 
+.title-container{
+    height: 50px;
+}
+
 .page-not-found-container{
     margin: 100px 10%;
+}
+
+.responsive-canvas{
+    max-width: 100%;
+    height: auto;
+}
+
+@media screen and (max-width: 768px){
+    html{
+        font-size: 14px !important;
+    }
+    .result-container {
+        margin-top: 0px;
+    }
+    .comment-modal-content{
+        width: 90%;
+    }
+}
+
+@media screen and (max-width: 425px){
+    html{
+        font-size: 12px !important;
+    }
+    .usage-container{
+        margin:10px 5%; 
+    }
+    .page-footer{
+        margin-top: 50px;
+    }
 }
